@@ -1,0 +1,20 @@
+<%= form_with method: :post, local: true do |form| %>
+  <div class="field">
+    <%= form.label :email, 'Email:' %>
+    <%= form.email_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password, 'Password:' %>
+    <%= form.password_field :password %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password_confirmation, 'Password Confirmation:' %>
+    <%= form.password_field :password_confirmation %>
+  </div>
+
+  <div class="submit">
+    <%= form.submit %>
+  </div>
+<% end %>
