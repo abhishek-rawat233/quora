@@ -11,5 +11,8 @@
 
   <body>
     <%= yield %>
+    <% if @current_user %>
+      <li><%= button_to 'Logout', logout_path, method: :delete %></li>
+    <% end %>
   </body>
 </html>

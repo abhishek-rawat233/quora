@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_17_113037) do
+ActiveRecord::Schema.define(version: 2019_12_18_113840) do
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email"
@@ -20,6 +20,10 @@ ActiveRecord::Schema.define(version: 2019_12_17_113037) do
     t.boolean "verified", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
+    t.string "remember_login_token"
+    t.string "forgot_password_token"
+    t.integer "credits"
   end
 
 end

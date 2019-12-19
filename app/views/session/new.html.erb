@@ -1,0 +1,33 @@
+<% if notice %>
+  <aside id="notice"><%= notice %></aside>
+<% end %>
+
+<%= form_with do %>
+  <h2>Please Log In</h2>
+  <div class="field">
+    <%= label_tag :email, 'Email:' %>
+    <%= text_field_tag :email, params[:email] %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :password, 'Password:' %>
+    <%= password_field_tag :password, params[:password] %>
+  </div>
+
+  <div class="field">
+    <%= check_box_tag :remember_me -%>
+    <%= label_tag :remember_me, ' remember me' %>
+  </div>
+
+  <div class="link">
+    <%= link_to 'Forgot password', forgotPassword_path  %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag "Login" %>
+  </div>
+
+  <div class="link">
+    <%= link_to 'signup here...', registration_index_path %>
+  </div>
+<% end %>
