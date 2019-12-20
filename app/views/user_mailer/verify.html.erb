@@ -1,3 +1,3 @@
-<h3>Dear <%= @user.name %></h3>
+<h3><%= t('.dear') %><%= @user.name %></h3>
 
-Please verify mail by clicking this link <%= link_to 'link', verification_url(id: @user.id, token: @user.verification_token ) %>
+<p><%= t('.mailbody') %><%= link_to 'link', verification_url(id: @user.id, token: @user.verification_token ) %></p>

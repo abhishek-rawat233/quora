@@ -30,4 +30,58 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  registration:
+    create:
+      successful: 'User successfully registered. Please verify email using link send.'
+      unsuccessful: 'User registration unsuccessful.'
+    verification:
+      already_verified: 'User already verified.'
+    form:
+      name: 'Name:'
+      email: 'Email:'
+      password: 'Password:'
+      confirm_password: 'Password Confirmation'
+    verfied:
+      verified: 'User Verified'
+      not_verified: 'User not verified please try again with correct link'
+  session:
+    create:
+      authentication_failure: 'Invalid Email/Password combination.'
+      unverified: 'Only verified users can login. Please VERIFY.'
+    destroy:
+      logout: 'Logged out'
+    reset_password:
+      reset_successful: 'Password successfully reset.'
+      password_not_matched: 'please enter same password in both field.'
+    invalid:
+      try_again: 'Nice try...'
+    forgot_password_form:
+      email: 'Email:'
+      send: 'send'
+    new:
+      login_prompt: 'Please Log In'
+      email: 'Email:'
+      password: 'Password:'
+      forgot_password: 'Forgot Password'
+      remember_me: 'Remember me'
+      login: 'Login:'
+      signup: 'signup here...'
+    reset_password_form:
+      password: 'Password:'
+      confirm_password: 'Confirm Password:'
+      update_password: 'update password'
+    welcome:
+      welcome: 'WELCOME '
+  user:
+    edit_profile:
+      upload_profile_image: 'upload your profile pic'
+      back: 'back'
+  user_mailer:
+    reset_password:
+      dear: 'Dear '
+      mailbody: 'Please reset password by clicking this '
+    verify:
+      dear: 'Dear '
+      mailbody: 'Please verify mail by clicking this link '
+
   hello: "Hello world"

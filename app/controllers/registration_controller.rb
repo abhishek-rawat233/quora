@@ -1,5 +1,5 @@
 class RegistrationController < ApplicationController
-  # before_action :confirm_password, only: [:create, :update]
+  before_action :instantiate_user, only: [:create]
   include UserConcern
   after_action :set_credits, only: :verification
 
@@ -9,19 +9,17 @@ class RegistrationController < ApplicationController
   end
 
   def create
-    @user =  User.new(user_params)
     if @user.save
-      UserMailer.verify(@user).deliver_later
-      flash[:notice] = "User successfully registered. Please verify email using link send"
+      flash[:notice] = t('.successful')
     else
-      flash[:notice] = 'User registration unsuccessful.'
+      flash[:notice] = t('.unsuccessful')
     end
-    redirect_to registration_index_path
+    redirect_to signup_path
   end
 
   def verification
     @user = User.find(params[:id])
-    redirect_to welcome_path, notice: 'User already verified' if @user.verified
+    redirect_to welcome_path, notice: t('.already_verified') if @user.verified
     if @user.verification_token == params[:token]
       @user.update(verified: true)
       render "verified"
@@ -29,13 +27,15 @@ class RegistrationController < ApplicationController
   end
 
   private
-  def confirm_password
-    unless params[:password].empty? && params[:password] == params[:password_confirmation]
-      redirect_to registration_index_path, notice: 'password didnot match'
-    end
+  def user_params
+    params.permit(:name, :email, :password, :password_confirmation)
   end
 
-  def user_params
-    params.permit(:name, :email, :password)
+  def field_empty?(*fields)
+    fields.any? { |field| params[field].present? }
+  end
+
+  def instantiate_user
+    @user =  User.new(user_params)
   end
 end

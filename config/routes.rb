@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  resources :registration, path: :signup do
+  controller :registration do
+    get '/signup', to: 'registration#new'
+    post '/signup', to: 'registration#create'
   end
 
   resources :user do

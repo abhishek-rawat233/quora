@@ -1,10 +1,10 @@
 <h2>Edit Profile</h2>
 <%= form_with model: @current_user, url: user_profile_edit_path do |f| %>
   <div class="field">
-    <%= f.label :profile_image, 'upload your profile pic' %>
+    <%= f.label :profile_image, t('.upload_profile_image') %>
     <%= f.file_field :profile_image, accept: 'image/png,image/gif,image/jpeg' %>
   </div>
 
   <%= submit_tag %>
 <% end %>
-<%= link_to 'back', user_profile_path %>
+<%= link_to t('.back'), user_profile_path %>
