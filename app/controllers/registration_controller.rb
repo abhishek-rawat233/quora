@@ -21,10 +21,11 @@ class RegistrationController < ApplicationController
 
   def verification
     @user = User.find(params[:id])
+    redirect_to welcome_path, notice: 'User already verified' if @user.verified
     if @user.verification_token == params[:token]
       @user.update(verified: true)
+      render "verified"
     end
-    render "verified"
   end
 
   private

@@ -3,6 +3,12 @@ Rails.application.routes.draw do
   resources :registration, path: :signup do
   end
 
+  resources :user do
+    get '/profile', to: 'user#profile'
+    get '/profile/edit', to: 'user#edit_profile'
+    match '/profile/edit', to: 'user#update_profile', via: [:patch, :put, :post]
+  end
+
   get '/verification', to: 'registration#verification'
 
   controller :session do

@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   before_save :set_verification_token
   has_secure_password
+  has_one_attached :image
+  has_many :interests
+  has_many :topics, through: :interests
+
   validates :email, presence: true, format: { with: EMAIL_VALIDATOR,
                                               message: "invalid. Please enter valid mail id." }
   validates :email, uniqueness: true

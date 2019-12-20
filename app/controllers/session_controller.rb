@@ -55,6 +55,7 @@ class SessionController < ApplicationController
   end
 
   def welcome
+    redirect_to login_path if @current_user.nil?
   end
 
   def password_matched?
