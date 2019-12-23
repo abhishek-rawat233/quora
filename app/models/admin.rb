@@ -1,2 +1,2 @@
-class Admin < User
+class Admin < BaseUser
 end

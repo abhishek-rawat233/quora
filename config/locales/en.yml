@@ -32,10 +32,12 @@
 en:
   registration:
     create:
-      successful: 'User successfully registered. Please verify email using link send.'
-      unsuccessful: 'User registration unsuccessful.'
+      user_creation_successful: 'User successfully registered. Please verify email using link send.'
+      user_creation_unsuccessful: 'User registration unsuccessful.'
     verification:
       already_verified: 'User already verified.'
+      contact_help: 'Enter correct url or contact XXXXXXXXXXX if issue persists.'
+      invalid_url: 'Please enter valid url'
     form:
       name: 'Name:'
       email: 'Email:'
@@ -44,12 +46,14 @@ en:
     verfied:
       verified: 'User Verified'
       not_verified: 'User not verified please try again with correct link'
-  session:
+  sessions:
     create:
       authentication_failure: 'Invalid Email/Password combination.'
       unverified: 'Only verified users can login. Please VERIFY.'
     destroy:
-      logout: 'Logged out'
+      logout: "Logged out."
+    forgotPassword:
+      user_not_present: "Please enter correct email. No such user present"
     reset_password:
       reset_successful: 'Password successfully reset.'
       password_not_matched: 'please enter same password in both field.'
@@ -64,7 +68,7 @@ en:
       password: 'Password:'
       forgot_password: 'Forgot Password'
       remember_me: 'Remember me'
-      login: 'Login:'
+      login: 'Login'
       signup: 'signup here...'
     reset_password_form:
       password: 'Password:'
@@ -72,7 +76,7 @@ en:
       update_password: 'update password'
     welcome:
       welcome: 'WELCOME '
-  user:
+  users:
     edit_profile:
       upload_profile_image: 'upload your profile pic'
       back: 'back'
