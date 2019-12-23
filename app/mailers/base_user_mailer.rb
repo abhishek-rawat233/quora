@@ -1,4 +1,4 @@
-class UserMailer < ApplicationMailer
+class BaseUserMailer < ApplicationMailer
   default from: "abhishek #{Rails.application.credentials.dig(:development, :sender_mail)}"
   def verify(user)
     @user = user

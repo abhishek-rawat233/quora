@@ -15,11 +15,11 @@ class BaseUser < ApplicationRecord
 
   def set_forgot_password_token
     update(forgot_password_token: generate_token)
-    UserMailer.reset_password(user).deliver
+    BaseUserMailer.reset_password(user).deliver
   end
 
   def send_verification_mail
-    UserMailer.verify(self).deliver_later
+    BaseUserMailer.verify(self).deliver_later
   end
 
   def set_api_token
