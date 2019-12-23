@@ -1,6 +1,5 @@
 class RegistrationController < ApplicationController
   before_action :set_user, only: [:create]
-  include UserConcern
   before_action :get_user_by_id, only: :verification
 
   def new
