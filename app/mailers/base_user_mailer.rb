@@ -1,5 +1,5 @@
-class UserMailer < ApplicationMailer
-  default from: 'abhishek <abhishek.rawat@vinsol.com>'
+class BaseUserMailer < ApplicationMailer
+  default from: "abhishek #{Rails.application.credentials.dig(:development, :sender_mail)}"
   def verify(user)
     @user = user
     mail to: user.email, subject: 'verify the mail using the link'

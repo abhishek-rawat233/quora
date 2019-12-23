@@ -5,22 +5,24 @@ Rails.application.routes.draw do
     post '/signup', to: 'registration#create'
   end
 
-  resources :user do
-    get '/profile', to: 'user#profile'
-    get '/profile/edit', to: 'user#edit_profile'
-    match '/profile/edit', to: 'user#update_profile', via: [:patch, :put, :post]
+  resources :base_user do
+    get '/profile', to: 'base_user#profile'
+    get '/profile/edit', to: 'base_user#edit_profile'
+    match '/profile/edit', to: 'base_user#update_profile', via: [:patch, :put, :post]
   end
 
   get '/verification', to: 'registration#verification'
 
-  controller :session do
-    get 'login' => :new
-    post 'login' => :create
-    delete 'logout' => :destroy
-    get 'welcome', to: 'session#welcome'
+
+  get 'login', to: 'sessions#new'
+  post 'login', to: 'sessions#create'
+
+  controller :sessions do
+    get 'welcome', to: 'sessions#welcome'
     get 'forgotPassword' => :forgot_password_form
-    post 'forgotPassword' => :forgot_password
     get 'resetPassword' => :reset_password_form
+    delete 'logout' => :destroy
+    post 'forgotPassword' => :forgot_password
     post 'resetPassword' => :reset_password
   end
 

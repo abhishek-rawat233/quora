@@ -1,15 +1,18 @@
-class SessionController < ApplicationController
+class SessionsController < ApplicationController
   include UserConcern
-  after_action :set_forgot_password_token, :send_reset_password_mail, only: :forgotPassword
+  before_action :try, only: :create
+  after_action :forgot_password, only: :forgotPassword
+  # after_action :set_forgot_password_token, :send_reset_password_mail, only: :forgotPassword
   after_action :destroy_password_token, only: :reset_password
 
   def new
-    redirect_to welcome_path if @current_user
-    @user = User.new
+    redirect_to welcome_path if @current_user.present?
+    @user = BaseUser.new
   end
 
   def create
-    @user = User.find_by(email: params[:email])
+    puts 'hi'
+    @user = BaseUser.find_by(email: params[:email])
     unless @user.present? && @user.try(:authenticate, params[:password])
       redirect_to login_url, notice: t('.authentication_failure')
     else
@@ -38,12 +41,12 @@ class SessionController < ApplicationController
   end
 
   def resetPasswordForm
-    @user = User.find_by(id: params[:user_id])
+    @user = BaseUser.find_by(id: params[:user_id])
     render 'invalid_url' unless @user.forgot_password_token == params[:token]
   end
 
-  def reset_password()
-    user = User.find_by(id: params[:user_id])
+  def reset_password
+    user = BaseUser.find_by(id: params[:user_id])
     if password_matched?
       user.update(password: params[:password])
       redirect_to login_path, notice: t('.reset_successful')
@@ -66,5 +69,10 @@ class SessionController < ApplicationController
       cookies.permanent.signed[:user_id] = @user.id
       cookies.permanent.signed[:remember_login_token] = @user.remember_login_token
     end
+  end
+
+  def try
+    debugger
+    puts 'hi'
   end
 end

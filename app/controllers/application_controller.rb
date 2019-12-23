@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
     session[:user_id] ||= remember_user
     user_id = session[:user_id]
     @current_user ||= User.find_by(id: user_id)
+    true
   end
 
   def remember_user
