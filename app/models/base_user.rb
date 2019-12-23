@@ -14,7 +14,7 @@ class BaseUser < ApplicationRecord
   validates :password_confirmation, presence: true, on: [:create, :password_digest_changed?]
 
   def set_forgot_password_token
-    update(forgot_password_token: SecureRandom.urlsafe_base64)
+    update(forgot_password_token: generate_token)
     UserMailer.reset_password(user).deliver
   end
 
@@ -23,9 +23,9 @@ class BaseUser < ApplicationRecord
   end
 
   def set_api_token
-    new_api_token = get_api_token
+    new_api_token = generate_token
     while User.find_by(api_token: new_api_token).present?
-      new_api_token = get_api_token
+      new_api_token = generate_token
     end
     update(api_token: new_api_token)
   end
@@ -47,11 +47,11 @@ class BaseUser < ApplicationRecord
   end
 
   private
-  def get_api_token
+  def generate_token
     SecureRandom.urlsafe_base64
   end
 
   def set_verification_token
-    self.verification_token = SecureRandom.urlsafe_base64
+    self.verification_token = generate_token
   end
 end
