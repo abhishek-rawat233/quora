@@ -22,7 +22,7 @@ class RegistrationController < ApplicationController
     elsif @user.verified
       redirect_to login_path, notice: t('.already_verified')
     elsif @user.verification_token == params[:token]
-      @user.update(verified: true)
+      @user.verify
       render "verified"
     else
       redirect_to login_path, notice: t('.invalid_url')
