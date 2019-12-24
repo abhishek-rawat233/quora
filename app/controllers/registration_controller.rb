@@ -1,8 +1,6 @@
 class RegistrationController < ApplicationController
-  before_action :instantiate_user, only: :create
-  include BaseUserConcern
-  after_action :set_credits, only: :verification
-
+  before_action :set_user, only: [:create]
+  before_action :get_user_by_id, only: :verification
 
   def new
     @user = BaseUser.new
@@ -10,19 +8,23 @@ class RegistrationController < ApplicationController
 
   def create
     if @user.save
-      flash[:notice] = t('.successful')
+      flash[:notice] = t('.user_creation_successful')
     else
-      flash[:notice] = t('.unsuccessful')
+      flash[:notice] = t('.user_creation_unsuccessful')
     end
     redirect_to signup_path
   end
 
   def verification
-    @user = BaseUser.find(params[:id])
-    redirect_to welcome_path, notice: t('.already_verified') if @user.verified
-    if @user.verification_token == params[:token]
-      @user.update(verified: true)
+    if @user.nil?
+      redirect_to signup_path, notice: t('.contact_help')
+    elsif @user.verified
+      redirect_to login_path, notice: t('.already_verified')
+    elsif @user.verification_token == params[:token]
+      @user.verify
       render "verified"
+    else
+      redirect_to login_path, notice: t('.invalid_url')
     end
   end
 
@@ -31,12 +33,6 @@ class RegistrationController < ApplicationController
     params.permit(:name, :email, :password, :password_confirmation)
   end
 
-#remove this
-  # def field_empty?(*fields)
-  #   fields.any? { |field| params[field].present? }
-  # end
-
-  def instantiate_user
-    @user =  BaseUser.new(user_params)
-  end
+  def set_user
+    @user =  User.new(user_params)
   end

@@ -1,19 +1,15 @@
 class SessionsController < ApplicationController
-  include UserConcern
-  before_action :try, only: :create
-  after_action :forgot_password, only: :forgotPassword
-  # after_action :set_forgot_password_token, :send_reset_password_mail, only: :forgotPassword
-  after_action :destroy_password_token, only: :reset_password
+  before_action :redirect_guest_users, only: [:welcome]
+  before_action :redirect_current_user, only: :new
+  before_action :get_user_by_email, only: [:forgotPassword, :login]
+  before_action :get_user_by_id, only: [:resetPasswordForm, :reset_password]
 
   def new
-    redirect_to welcome_path if @current_user.present?
-    @user = BaseUser.new
+    @user = User.new
   end
 
-  def create
-    puts 'hi'
-    @user = BaseUser.find_by(email: params[:email])
-    unless @user.present? && @user.try(:authenticate, params[:password])
+  def login
+    unless @user.present? && @user.validate_password(params[:password])
       redirect_to login_url, notice: t('.authentication_failure')
     else
       remember_me?
@@ -26,9 +22,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    if cookies.signed[:user_id]
-      cookies.signed[:user_id] = nil
-      cookies.signed[:remember_login_token] = nil
+    if cookies.signed[:api_token].present?
+      cookies.signed[:api_token] = nil
     end
     session[:user_id] = nil
     redirect_to login_path, notice: t('.logout')
@@ -38,17 +33,21 @@ class SessionsController < ApplicationController
   end
 
   def forgotPassword
+    if @user.present?
+      @user.set_forgot_password_token
+    else
+      redirect_to login_path, notice: t('.user_not_present')
+    end
   end
 
   def resetPasswordForm
-    @user = BaseUser.find_by(id: params[:user_id])
-    render 'invalid_url' unless @user.forgot_password_token == params[:token]
+    render 'invalid_url' unless user.present? && @user.forgot_password_token == params[:token]
   end
 
-  def reset_password
-    user = BaseUser.find_by(id: params[:user_id])
+  def reset_password()
     if password_matched?
-      user.update(password: params[:password])
+      @user.update_password(params[:password])
+      @user.set_api_token
       redirect_to login_path, notice: t('.reset_successful')
     else
       flash[:notice] = t('.password_not_matched')
@@ -56,7 +55,6 @@ class SessionsController < ApplicationController
   end
 
   def welcome
-    redirect_to login_path if @current_user.nil?
   end
 
   def password_matched?
@@ -65,14 +63,11 @@ class SessionsController < ApplicationController
 
   def remember_me?
     if params[:remember_me]
-      set_remember_login_token(@user)
-      cookies.permanent.signed[:user_id] = @user.id
-      cookies.permanent.signed[:remember_login_token] = @user.remember_login_token
+      cookies.permanent.signed[:api_token] = @user.api_token
     end
   end
 
-  def try
-    debugger
-    puts 'hi'
+  def redirect_current_user
+    redirect_to welcome_path if @current_user.present?
   end
 end
