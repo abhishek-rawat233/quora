@@ -17,7 +17,8 @@ class SessionsController < ApplicationController
         redirect_to login_url, notice: t('.unverified')
       end
       session[:user_id] = @user.id
-      redirect_to welcome_path
+      redirect_to home_path
+      # redirect_to welcome_path
     end
   end
 

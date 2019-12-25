@@ -46,6 +46,11 @@ class BaseUser < ApplicationRecord
     update(verified: true, credits: 5)
   end
 
+  def add_topics(topics)
+    topics.difference self.topics.ids.
+      each { |topic| user_favorite_topics.create({ topic_id: topic }) }
+  end
+
   private
   def generate_token
     SecureRandom.urlsafe_base64

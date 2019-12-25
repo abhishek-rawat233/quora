@@ -80,6 +80,13 @@ en:
     edit_profile:
       upload_profile_image: 'upload your profile pic'
       back: 'back'
+  user_feeds:
+    question_form:
+      title: 'Title: '
+      content: 'Content: '
+      publish: 'Publish'
+      save_for_later: 'Save in Drafts'
+      attach_pdfs: 'Attach Pdf docs'
   user_mailer:
     reset_password:
       dear: 'Dear '

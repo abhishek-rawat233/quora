@@ -11,13 +11,20 @@ Rails.application.routes.draw do
     match '/profile/edit', to: 'users#update_profile', via: [:patch, :put, :post]
   end
 
+  controller :user_feeds do
+    get 'home', to: :home
+    post 'submit_question', to: :submit_question
+  end
+
   get '/verification', to: 'registration#verification'
+
+  resources :questions
 
   controller :sessions do
     get 'login' => :new
     post 'login' => :login
     delete 'logout' => :destroy
-    get 'welcome' => :welcome
+    root 'sessions#welcome'
     get 'forgotPassword' => :forgot_password_form
     post 'forgotPassword' => :forgot_password
     get 'resetPassword' => :reset_password_form
