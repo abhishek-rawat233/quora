@@ -1,11 +1,16 @@
 class BaseUser < ApplicationRecord
+  include UserConcern
+  has_secure_password
+
   after_create_commit :send_verification_mail
 
   before_save :set_verification_token
   before_create :set_api_token
-  has_secure_password
+
+  ####association####
+
   has_one_attached :image
-  has_many :user_favorite_topics
+  has_many :user_favorite_topics, dependent: :destroy
   has_many :topics, through: :user_favorite_topics
 
   validates :email, presence: true, uniqueness: true, format: { with: EMAIL_VALIDATOR,
@@ -14,7 +19,7 @@ class BaseUser < ApplicationRecord
   validates :password_confirmation, presence: true, on: [:create, :password_digest_changed?]
 
   def set_forgot_password_token
-    update(forgot_password_token: generate_token)
+    update(forgot_password_token: generate_token("forgot_password_token"))
     BaseUserMailer.reset_password(user).deliver
   end
 
@@ -23,10 +28,7 @@ class BaseUser < ApplicationRecord
   end
 
   def set_api_token
-    new_api_token = generate_token
-    while User.find_by(api_token: new_api_token).present?
-      new_api_token = generate_token
-    end
+    new_api_token = generate_token("api_token")
     update(api_token: new_api_token)
   end
 
@@ -47,11 +49,7 @@ class BaseUser < ApplicationRecord
   end
 
   private
-  def generate_token
-    SecureRandom.urlsafe_base64
-  end
-
   def set_verification_token
-    self.verification_token = generate_token
+    self.verification_token = generate_token("verification_token")
   end
 end

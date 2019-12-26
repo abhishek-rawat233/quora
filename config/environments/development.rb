@@ -38,6 +38,7 @@ Rails.application.configure do
 
 #gmail config
    config.action_mailer.delivery_method = :smtp
+   config.active_job.queue_adapter = :inline
    host = 'localhost:3000'
    config.action_mailer.default_url_options = { host: host, protocol: 'http' }
 

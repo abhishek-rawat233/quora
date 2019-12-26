@@ -13,23 +13,22 @@ class SessionsController < ApplicationController
       redirect_to login_url, notice: t('.authentication_failure')
     else
       remember_me?
-      unless @user.verified
-        redirect_to login_url, notice: t('.unverified')
-      end
-      session[:user_id] = @user.id
+      redirect_unverified_user
+      session[:api_token] = @user.api_token
       redirect_to welcome_path
     end
+  end
+
+  def redirect_unverified_user
+    redirect_to login_url, notice: t('.unverified') unless @user.verified
   end
 
   def destroy
     if cookies.signed[:api_token].present?
       cookies.signed[:api_token] = nil
     end
-    session[:user_id] = nil
+    session[:api_token] = nil
     redirect_to login_path, notice: t('.logout')
-  end
-
-  def forgotPasswordForm
   end
 
   def forgotPassword
@@ -68,6 +67,6 @@ class SessionsController < ApplicationController
   end
 
   def redirect_current_user
-    redirect_to welcome_path if @current_user.present?
+    redirect_to welcome_path, notice: t('.already_registered') if @current_user.present?
   end
 end

@@ -70,6 +70,8 @@ en:
       remember_me: 'Remember me'
       login: 'Login'
       signup: 'signup here...'
+    redirect_current_user:
+      already_registered: 'User is already signed in.'
     reset_password_form:
       password: 'Password:'
       confirm_password: 'Confirm Password:'

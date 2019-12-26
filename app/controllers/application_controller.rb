@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_user
-    @current_user = User.find_by(id: session[:user_id]) || get_api_stored_user
+    @current_user ||= User.find_by(api_token: session[:api_token]) || get_api_stored_user
   end
 
   def get_api_stored_user
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
 
   def logout
     clear_stored_user_api
-    session[:user_id] = nil
+    session[:api_token] = nil
     redirect_to login_path, notice: t('.logout', notice: 'Please login again.')
   end
 
