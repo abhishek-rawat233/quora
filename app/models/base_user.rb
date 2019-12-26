@@ -6,6 +6,7 @@ class BaseUser < ApplicationRecord
 
   before_save :set_verification_token
   before_create :set_api_token
+  before_save :set_credits, if: :verified_changed?
 
   ####association####
 
@@ -45,7 +46,11 @@ class BaseUser < ApplicationRecord
   end
 
   def verify
-    update(verified: true, credits: 5)
+    update(verified: true)
+  end
+
+  def set_credits
+    credits = 5
   end
 
   private
