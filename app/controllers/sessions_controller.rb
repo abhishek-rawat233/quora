@@ -69,6 +69,6 @@ class SessionsController < ApplicationController
   end
 
   def redirect_current_user
-    redirect_to welcome_path if @current_user.present?
+    redirect_to home_path, notice: 'already verified' if @current_user.present?
   end
 end
