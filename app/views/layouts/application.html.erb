@@ -10,6 +10,10 @@
   </head>
 
   <body>
+    <% if notice %>
+      <aside id="notice"><%= notice %></aside>
+    <% end %>
+
     <%= yield %>
     <% if @current_user %>
       <li><%= button_to 'Logout', logout_path, method: :delete %></li>

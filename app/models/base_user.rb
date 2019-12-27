@@ -7,6 +7,7 @@ class BaseUser < ApplicationRecord
   has_one_attached :image
   has_many :user_favorite_topics
   has_many :topics, through: :user_favorite_topics
+  has_many :questions, -> { distinct }, through: :topics
 
   validates :email, presence: true, uniqueness: true, format: { with: EMAIL_VALIDATOR,
                                               message: "invalid. Please enter valid mail id." }
@@ -46,9 +47,9 @@ class BaseUser < ApplicationRecord
     update(verified: true, credits: 5)
   end
 
-  def add_topics(topics)
-    topics.difference self.topics.ids.
-      each { |topic| user_favorite_topics.create({ topic_id: topic }) }
+  def add_topics(topic_ids)
+    topic_ids.difference(self.topics.ids).
+      each { |topic_id| user_favorite_topics.create({ topic_id: topic_id }) }
   end
 
   private

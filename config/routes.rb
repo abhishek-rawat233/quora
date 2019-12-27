@@ -13,12 +13,16 @@ Rails.application.routes.draw do
 
   controller :user_feeds do
     get 'home', to: :home
+    get 'ask_question', to: :ask_question
     post 'submit_question', to: :submit_question
   end
 
   get '/verification', to: 'registration#verification'
 
-  resources :questions
+  resources :questions do
+    get '/:id', to: 'questions#show'
+  end
+  # resources :questions, param: :title , only: :show
 
   controller :sessions do
     get 'login' => :new

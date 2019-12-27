@@ -1,2 +1,13 @@
-<h2>Ask Your Question</h2>
-<%= render 'question_form' %>
+<%= link_to 'ask question', ask_question_path %>
+
+<h2>Question Factory</h2>
+<% @questions.each do |question| %>
+  <%= link_to question do %>
+  <div class="question">
+    <h3>Title: <%= question.title %></h3>
+    <% end %>
+    <h4><%= question.content %></h4>
+    <br>
+    <br>
+  </div>
+<% end %>
