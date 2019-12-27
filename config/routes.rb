@@ -5,11 +5,11 @@ Rails.application.routes.draw do
     post 'signup', to: 'registration#create'
   end
 
-  resources :users do
+  resources :users, only: [] do
     member do
-      get 'profile', to: 'users#profile'
+      get 'profile'
       get 'profile/edit', to: 'users#edit_profile'
-      match 'profile/edit', to: 'users#update_profile', via: [:patch, :put, :post]
+      post 'profile/edit', to: 'users#update_profile'
     end
   end
 

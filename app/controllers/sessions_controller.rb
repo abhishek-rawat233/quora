@@ -1,23 +1,19 @@
 class SessionsController < ApplicationController
-  before_action :redirect_guest_users, only: [:welcome]
+  skip_before_action :redirect_guest_users, except: :welcome
   before_action :redirect_current_user, only: [:new, :login, :reset_password_form, :reset_password_form]
   before_action :get_user_by_email, only: [:forgot_password, :login]
   before_action :get_user_by_id, only: [:reset_password_form, :reset_password]
-  after_action :logout, only: :destroy
+  before_action :check_user_validity, only: :login
 
   def new
     @user = User.new
   end
 
   def login
-    unless @user.present? && @user.validate_password(params[:password])
-      redirect_to login_url, notice: t('.authentication_failure')
-    else
-      remember_me?
-      redirect_unverified_user
-      session[:api_token] = @user.api_token
-      redirect_to welcome_path
-    end
+    remember_me?
+    redirect_unverified_user
+    session[:api_token] = @user.api_token
+    redirect_to welcome_path
   end
 
   def redirect_unverified_user
@@ -26,6 +22,7 @@ class SessionsController < ApplicationController
 
   #for logout
   def destroy
+    logout
   end
 
   def forgot_password

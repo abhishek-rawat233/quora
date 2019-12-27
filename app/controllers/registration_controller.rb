@@ -16,9 +16,7 @@ class RegistrationController < ApplicationController
   end
 
   def verification
-    if @user.nil?
-      redirect_to signup_path, notice: t('.contact_help')
-    elsif @user.verified
+    if @user.verified
       redirect_to login_path, notice: t('.already_verified')
     elsif @user.verification_token == params[:token]
       @user.verify

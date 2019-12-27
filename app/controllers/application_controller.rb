@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :redirect_guest_users
   before_action :set_locale
   before_action :set_current_user
 
@@ -47,8 +48,18 @@ class ApplicationController < ActionController::Base
     @user = User.find_by(email: params[:email])
   end
 
+  def redirect_invalid_user
+    redirect_to signup_path, notice: t('.contact_help') if @user.nil?
+  end
+
   def redirect_guest_users
-    @current_user ||= @user
-    redirect_to login_path if @current_user.nil?
+    if @current_user.nil?
+      logout
+      redirect_to login_path
+    end
+  end
+
+  def check_user_validity
+    redirect_to login_url, notice: t('.authentication_failure') unless @user.present? && @user.validate_password(params[:password])
   end
 end

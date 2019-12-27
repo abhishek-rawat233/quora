@@ -30,16 +30,21 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  applications:
+  application:
+    check_user_validity:
+      authentication_failure: 'Invalid Email/Password combination.'
     logout:
       logout: 'Please login again'
+    redirect_current_user:
+      already_registered: 'User is already signed in.'
+    redirect_invalid_user:
+      contact_help: 'Enter correct url or contact XXXXXXXXXXX if issue persists.'
   registration:
     create:
       user_creation_successful: 'User successfully registered. Please verify email using link send.'
       user_creation_unsuccessful: 'User registration unsuccessful.'
     verification:
       already_verified: 'User already verified.'
-      contact_help: 'Enter correct url or contact XXXXXXXXXXX if issue persists.'
       invalid_url: 'Please enter valid url'
     form:
       name: 'Name:'
@@ -51,7 +56,6 @@ en:
       not_verified: 'User not verified please try again with correct link'
   sessions:
     create:
-      authentication_failure: 'Invalid Email/Password combination.'
       unverified: 'Only verified users can login. Please VERIFY.'
     destroy:
       logout: "Logged out."
@@ -73,8 +77,6 @@ en:
       remember_me: 'Remember me'
       login: 'Login'
       signup: 'signup here...'
-    redirect_current_user:
-      already_registered: 'User is already signed in.'
     reset_password_form:
       password: 'Password:'
       confirm_password: 'Confirm Password:'
