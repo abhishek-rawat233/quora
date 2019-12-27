@@ -1,4 +1,15 @@
 class UsersController < ApplicationController
+  def edit_question
+    
+  end
+
+  def delete_question
+  end
+
+  def questions
+    @questions = @current_user.questions.where(question_type: :published).order(updated_at: :desc)
+  end
+
   def update_profile
     @current_user.add_image(get_profile_image) if params.keys.include?("user")
     selected_topics = get_favorite_topics

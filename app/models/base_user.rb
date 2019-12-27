@@ -4,11 +4,15 @@ class BaseUser < ApplicationRecord
   before_save :set_verification_token
   before_create :set_api_token
   has_secure_password
+
+  ###ASSOCIATION###
   has_one_attached :image
   has_many :user_favorite_topics
   has_many :topics, through: :user_favorite_topics
-  has_many :questions, -> { distinct }, through: :topics
+  has_many :related_questions, -> { distinct }, through: :topics, source: 'questions'
+  has_many :questions
 
+  ###VALIDATION###
   validates :email, presence: true, uniqueness: true, format: { with: EMAIL_VALIDATOR,
                                               message: "invalid. Please enter valid mail id." }
   validates :password_digest, presence: true, confirmation: true, on: :create

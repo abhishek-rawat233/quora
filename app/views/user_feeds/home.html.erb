@@ -1,4 +1,5 @@
-<%= link_to 'ask question', ask_question_path %>
+<%= link_to 'ask question', new_question_path -%> |
+<%= link_to 'user questions', user_questions_path(@current_user) %>
 
 <h2>Question Factory</h2>
 <% @questions.each do |question| %>

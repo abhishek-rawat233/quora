@@ -1,0 +1,14 @@
+<% if notice %>
+  <aside id="notice"><%= notice %></aside>
+<% end %>
+
+<% @questions.each do |question| %>
+  <div class="question">
+    <h3>Title: <%= question.title %></h3>
+    <h4><%= question.content %></h4>
+    <%= link_to 'edit', user_questions_path(question) %>
+    <%= link_to 'delete', user_questions_path(question) %>
+    <br>
+    <br>
+  </div>
+<% end %>

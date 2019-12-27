@@ -30,6 +30,9 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  questions:
+    check_title_uniqueness:
+      title_already_exists: 'Title already in use. Please use different one.'
   registration:
     create:
       user_creation_successful: 'User successfully registered. Please verify email using link send.'
@@ -87,6 +90,8 @@ en:
       publish: 'Publish'
       save_for_later: 'Save in Drafts'
       attach_pdfs: 'Attach Pdf docs'
+    submit_question:
+      successfully_created: 'Question successfully created.'
   user_mailer:
     reset_password:
       dear: 'Dear '
