@@ -30,6 +30,9 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  applications:
+    logout:
+      logout: 'Please login again'
   registration:
     create:
       user_creation_successful: 'User successfully registered. Please verify email using link send.'
@@ -82,6 +85,8 @@ en:
     edit_profile:
       upload_profile_image: 'upload your profile pic'
       back: 'back'
+    update_profile:
+      successfully_uploaded: 'successfully uploaded'
   user_mailer:
     reset_password:
       dear: 'Dear '

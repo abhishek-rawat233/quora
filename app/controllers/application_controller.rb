@@ -21,21 +21,18 @@ class ApplicationController < ActionController::Base
   def get_api_stored_user
     user = User.find_by(api_token: cookies.signed[:api_token])
     if user.present?
-      if user.api_token == cookies.signed[:api_token]
-        user
-      else
-        logout
-      end
+      return user if user.api_token == cookies.signed[:api_token]
     end
+    logout
   end
 
   def logout
-    clear_stored_user_api
+    clear_cookies
     session[:api_token] = nil
-    redirect_to login_path, notice: t('.logout', notice: 'Please login again.')
+    redirect_to login_path, notice: t('.logout')
   end
 
-  def clear_stored_user_api
+  def clear_cookies
     if cookies.signed[:api_token]
       cookies.signed[:api_token] = nil
     end
@@ -51,6 +48,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_guest_users
+    @current_user ||= @user
     redirect_to login_path if @current_user.nil?
   end
 end

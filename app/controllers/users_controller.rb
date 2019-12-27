@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   def update_profile
     @current_user.add_image(get_profile_image) if params.keys.include?("user")
-    redirect_to user_profile_path, notice: 'upload successful'
+    redirect_to user_profile_path, notice: t('.successfully_uploaded')
   end
 
   def get_profile_image

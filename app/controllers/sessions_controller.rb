@@ -1,8 +1,9 @@
 class SessionsController < ApplicationController
   before_action :redirect_guest_users, only: [:welcome]
-  before_action :redirect_current_user, only: :new
-  before_action :get_user_by_email, only: [:forgotPassword, :login]
-  before_action :get_user_by_id, only: [:resetPasswordForm, :reset_password]
+  before_action :redirect_current_user, only: [:new, :login, :reset_password_form, :reset_password_form]
+  before_action :get_user_by_email, only: [:forgot_password, :login]
+  before_action :get_user_by_id, only: [:reset_password_form, :reset_password]
+  after_action :logout, only: :destroy
 
   def new
     @user = User.new
@@ -23,15 +24,11 @@ class SessionsController < ApplicationController
     redirect_to login_url, notice: t('.unverified') unless @user.verified
   end
 
+  #for logout
   def destroy
-    if cookies.signed[:api_token].present?
-      cookies.signed[:api_token] = nil
-    end
-    session[:api_token] = nil
-    redirect_to login_path, notice: t('.logout')
   end
 
-  def forgotPassword
+  def forgot_password
     if @user.present?
       @user.set_forgot_password_token
     else
@@ -39,11 +36,11 @@ class SessionsController < ApplicationController
     end
   end
 
-  def resetPasswordForm
+  def reset_password_form
     render 'invalid_url' unless user.present? && @user.forgot_password_token == params[:token]
   end
 
-  def reset_password()
+  def reset_password
     if password_matched?
       @user.update_password(params[:password])
       @user.set_api_token

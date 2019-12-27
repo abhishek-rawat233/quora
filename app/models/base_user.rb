@@ -1,5 +1,5 @@
 class BaseUser < ApplicationRecord
-  include UserConcern
+  include TokenableConcern
   has_secure_password
 
   after_create_commit :send_verification_mail

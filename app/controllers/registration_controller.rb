@@ -1,6 +1,6 @@
 class RegistrationController < ApplicationController
   before_action :set_user, only: [:create]
-  before_action :get_user_by_id, only: :verification
+  before_action :get_user_by_id, :redirect_guest_user, only: :verification
 
   def new
     @user = User.new
