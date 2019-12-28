@@ -1,6 +1,10 @@
 class RegistrationController < ApplicationController
+  skip_before_action :redirect_guest_users
   before_action :set_user, only: [:create]
-  before_action :get_user_by_id, :redirect_guest_user, only: :verification
+  before_action :get_user_by_id, only: :verification
+  before_action :redirect_guest_user, only: :verfication
+  before_action :redirect_pre_verified_user, only: :verification
+
 
   def new
     @user = User.new
@@ -16,9 +20,7 @@ class RegistrationController < ApplicationController
   end
 
   def verification
-    if @user.verified
-      redirect_to login_path, notice: t('.already_verified')
-    elsif @user.verification_token == params[:token]
+    if @user.verification_token == params[:token]
       @user.verify
       render "verified"
     else
@@ -27,6 +29,11 @@ class RegistrationController < ApplicationController
   end
 
   private
+
+  def redirect_pre_verified_user
+    redirect_to login_path, notice: t('.already_verified') if @user.verified
+  end
+
   def user_params
     params.permit(:name, :email, :password, :password_confirmation)
   end

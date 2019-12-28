@@ -2,18 +2,20 @@ class BaseUser < ApplicationRecord
   include TokenableConcern
   has_secure_password
 
-  after_create_commit :send_verification_mail
-
-  before_save :set_verification_token
+  ###CALLBACKS###
   before_create :set_api_token
-  before_save :set_credits, if: :verified_changed?
+  after_create_commit :set_verification_token
+  after_create_commit :send_verification_mail
+  after_commit :set_credits, if: [:verified_changed?, :verified?]
+
 
   ####association####
-
   has_one_attached :image
   has_many :user_favorite_topics, dependent: :destroy
   has_many :topics, through: :user_favorite_topics
 
+
+  ###VALIDATIONS###
   validates :email, presence: true, uniqueness: true, format: { with: EMAIL_VALIDATOR,
                                               message: "invalid. Please enter valid mail id." }
   validates :password_digest, presence: true, confirmation: true, on: :create
@@ -30,7 +32,7 @@ class BaseUser < ApplicationRecord
 
   def set_api_token
     new_api_token = generate_token("api_token")
-    update(api_token: new_api_token)
+    self.api_token = new_api_token
   end
 
   def update_password(new_password)

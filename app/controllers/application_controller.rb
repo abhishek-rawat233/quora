@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
+  before_action :set_current_user
   before_action :redirect_guest_users
   before_action :set_locale
-  before_action :set_current_user
 
   def set_locale
     if params[:locale]
@@ -20,11 +20,8 @@ class ApplicationController < ActionController::Base
   end
 
   def get_api_stored_user
-    user = User.find_by(api_token: cookies.signed[:api_token])
-    if user.present?
-      return user if user.api_token == cookies.signed[:api_token]
-    end
-    logout
+    user ||= User.find_by(api_token: cookies.signed[:api_token])
+    user if user.present? && user.api_token == cookies.signed[:api_token]
   end
 
   def logout
@@ -53,10 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_guest_users
-    if @current_user.nil?
-      logout
-      redirect_to login_path
-    end
+    logout if @current_user.nil?
   end
 
   def check_user_validity

@@ -55,9 +55,7 @@ class SessionsController < ApplicationController
   end
 
   def remember_me?
-    if params[:remember_me]
-      cookies.permanent.signed[:api_token] = @user.api_token
-    end
+    cookies.permanent.signed[:api_token] = @user.api_token if params[:remember_me]
   end
 
   def redirect_current_user

@@ -43,8 +43,9 @@ en:
     create:
       user_creation_successful: 'User successfully registered. Please verify email using link send.'
       user_creation_unsuccessful: 'User registration unsuccessful.'
-    verification:
+    redirect_pre_verified_user:
       already_verified: 'User already verified.'
+    verification:
       invalid_url: 'Please enter valid url'
     form:
       name: 'Name:'
