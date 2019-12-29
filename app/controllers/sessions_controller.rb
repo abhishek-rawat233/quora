@@ -34,7 +34,7 @@ class SessionsController < ApplicationController
   end
 
   def reset_password_form
-    render 'invalid_url' unless user.present? && @user.forgot_password_token == params[:token]
+    render 'invalid_url' unless @user.present? && @user.forgot_password_token == params[:token]
   end
 
   def reset_password

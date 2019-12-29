@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
 
   def get_user_by_id
     user_id = params[:user_id] || params[:id]
-    @user = User.find_by(email: user_id)
+    @user = User.find_by(id: user_id)
   end
 
   def get_user_by_email

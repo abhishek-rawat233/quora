@@ -5,8 +5,7 @@ class BaseUser < ApplicationRecord
   ###CALLBACKS###
   before_create :set_api_token
   after_create_commit :set_verification_token
-  after_create_commit :send_verification_mail
-  after_commit :set_credits, if: [:verified_changed?, :verified?]
+  # after_update :set_credits, if: [:verified_changed?, :verified?]
 
 
   ####association####
@@ -23,10 +22,10 @@ class BaseUser < ApplicationRecord
 
   def set_forgot_password_token
     update(forgot_password_token: generate_token("forgot_password_token"))
-    BaseUserMailer.reset_password(user).deliver
+    BaseUserMailer.reset_password(self).deliver
   end
 
-  def send_verification_mail
+    def send_verification_mail
     BaseUserMailer.verify(self).deliver_later
   end
 
@@ -36,7 +35,7 @@ class BaseUser < ApplicationRecord
   end
 
   def update_password(new_password)
-    update(password_digest: new_password, forgot_password_token: nil)
+    update(password: new_password, forgot_password_token: nil)
   end
 
   def validate_password(password)
@@ -48,15 +47,18 @@ class BaseUser < ApplicationRecord
   end
 
   def verify
-    update(verified: true)
+    self.verified = true
+    set_credits
+    save
   end
 
   def set_credits
-    credits = 5
+    self.credits = 5 if verified? && verified_changed?
   end
 
   private
   def set_verification_token
-    self.verification_token = generate_token("verification_token")
+    update(verification_token: generate_token("verification_token"))
+    send_verification_mail
   end
 end

@@ -90,7 +90,7 @@ en:
       back: 'back'
     update_profile:
       successfully_uploaded: 'successfully uploaded'
-  user_mailer:
+  base_user_mailer:
     reset_password:
       dear: 'Dear '
       mailbody: 'Please reset password by clicking this '

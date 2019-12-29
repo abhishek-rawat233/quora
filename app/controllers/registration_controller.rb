@@ -1,8 +1,7 @@
 class RegistrationController < ApplicationController
-  skip_before_action :redirect_guest_users
+  skip_before_action :redirect_guest_users, except: :verification
   before_action :set_user, only: [:create]
   before_action :get_user_by_id, only: :verification
-  before_action :redirect_guest_user, only: :verfication
   before_action :redirect_pre_verified_user, only: :verification
 
 
