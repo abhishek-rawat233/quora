@@ -36,3 +36,4 @@ class RegistrationController < ApplicationController
   def set_user
     @user =  User.new(user_params)
   end
+end

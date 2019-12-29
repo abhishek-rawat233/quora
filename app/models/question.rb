@@ -13,6 +13,7 @@ class Question < ApplicationRecord
    before_save :check_title_uniqueness
 
   ###VALIDATION###
+  validates :check_title_uniqueness
   validates :title, :content, presence: true, if: -> { question_type == 'published' }
 
   def save_tagged_topics(topic_ids)
