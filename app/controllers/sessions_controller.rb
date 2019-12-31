@@ -59,6 +59,6 @@ class SessionsController < ApplicationController
   end
 
   def redirect_current_user
-    redirect_to welcome_path, notice: t('.already_registered') if @current_user.present?
+    redirect_to home_path, notice: t('.already_registered') if @current_user.present?
   end
 end

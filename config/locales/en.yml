@@ -55,6 +55,17 @@ en:
     verfied:
       verified: 'User Verified'
       not_verified: 'User not verified please try again with correct link'
+  questions:
+    check_title_uniqueness:
+      title_already_exists: 'Title already in use. Please use different one.'
+    new:
+      title: 'Title: '
+      content: 'Content: '
+      publish: 'Publish'
+      save_for_later: 'Save in Drafts'
+      attach_pdfs: 'Attach Pdf docs'
+      submit_question:
+        successfully_created: 'Question successfully created.'
   sessions:
     create:
       unverified: 'Only verified users can login. Please VERIFY.'
@@ -90,6 +101,7 @@ en:
       back: 'back'
     update_profile:
       successfully_uploaded: 'successfully uploaded'
+  user_feeds:
   base_user_mailer:
     reset_password:
       dear: 'Dear '

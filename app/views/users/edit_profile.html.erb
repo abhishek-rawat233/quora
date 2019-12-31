@@ -5,6 +5,11 @@
     <%= f.file_field :profile_image, accept: 'image/png,image/gif,image/jpeg' %>
   </div>
 
+  <div class="select">
+    <%= f.label 'topic_id' %>
+    <%= f.select 'topic_id', @topics.map { |topic| [ topic.name, topic.id ] }, {prompt: true, include_hidden: false}, {multiple: true} %>
+  </div>
+
   <%= submit_tag %>
 <% end %>
 <%= link_to t('.back'), profile_user_path %>
