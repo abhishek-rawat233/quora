@@ -1,0 +1,33 @@
+<% if notice %>
+  <aside id="notice"><%= notice %></aside>
+<% end %>
+
+<%= form_with do %>
+  <h2><%= t('.login_prompt') %></h2>
+  <div class="field">
+    <%= label_tag :email, t('.email') %>
+    <%= text_field_tag :email, params[:email] %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :password, t('.password') %>
+    <%= password_field_tag :password, params[:password] %>
+  </div>
+
+  <div class="field">
+    <%= check_box_tag :remember_me -%>
+    <%= label_tag :remember_me, t('.remember_me') %>
+  </div>
+
+  <div class="link">
+    <%= link_to t('.forgot_password'), forgotPassword_path  %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag t(".login") %>
+  </div>
+
+  <div class="link">
+    <%= link_to t('.signup'), signup_path %>
+  </div>
+<% end %>
