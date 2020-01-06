@@ -6,8 +6,8 @@
   <div class="question">
     <h3>Title: <%= question.title %></h3>
     <h4><%= question.content %></h4>
-    <%= link_to 'edit', user_questions_path(question) %>
-    <%= link_to 'delete', user_questions_path(question) %>
+    <%= link_to 'edit', edit_user_question_path(@current_user, question) %>
+    <%= link_to 'delete', user_question_path(@current_user, question), method: :destroy %>
     <br>
     <br>
   </div>

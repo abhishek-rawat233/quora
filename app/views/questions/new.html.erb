@@ -4,7 +4,7 @@
 
 <h3>Question</h3>
 
-<%= form_with model: @question, action: :create, method: :post do |form| %>
+<%= form_with model: @question, url: user_questions_path(@current_user) do |form| %>
   <div class="field">
     <%= form.label :title, t('.title') -%>
     <%= form.text_field :title %>

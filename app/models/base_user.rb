@@ -5,6 +5,7 @@ class BaseUser < ApplicationRecord
   ###CALLBACKS###
   before_create :set_api_token
   after_create_commit :set_verification_token
+  # after_
   # after_update :set_credits, if: [:verified_changed?, :verified?]
 
 
@@ -14,13 +15,17 @@ class BaseUser < ApplicationRecord
   has_many :topics, through: :user_favorite_topics
   has_many :related_questions, -> { distinct }, through: :topics, source: 'questions'
   has_many :questions
-
+  has_many :notifications,dependent: :destroy
 
   ###VALIDATIONS###
   validates :email, presence: true, uniqueness: true, format: { with: EMAIL_VALIDATOR,
                                               message: "invalid. Please enter valid mail id." }
   validates :password_digest, presence: true, confirmation: true, on: :create
   validates :password_confirmation, presence: true, on: [:create, :password_digest_changed?]
+
+  def unseen_notifications
+    notifications.where(status: :unseen)
+  end
 
   def set_forgot_password_token
     update(forgot_password_token: generate_token("forgot_password_token"))

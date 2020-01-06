@@ -1,4 +1,4 @@
 <h1><%= @current_user.name%> Profile</h1>
   <%= image_tag @current_user.image if @current_user.image.attached?%>
 
-<%= link_to 'edit', profile_edit_user_path %>
+<%= link_to 'edit', edit_user_path %>

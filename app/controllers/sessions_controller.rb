@@ -1,9 +1,9 @@
 class SessionsController < ApplicationController
   skip_before_action :redirect_guest_users, except: :welcome
-  before_action :redirect_current_user, only: [:new, :login, :reset_password_form, :reset_password_form]
+  before_action :redirect_current_user, only: [:new, :login, :forgot_password, :forgot_password_form, :reset_password_form, :reset_password_form]
   before_action :get_user_by_email, only: [:forgot_password, :login]
-  before_action :get_user_by_id, only: [:reset_password_form, :reset_password]
   before_action :check_user_validity, only: :login
+  before_action :get_user_by_id, only: [:reset_password_form, :reset_password]
 
   def new
     @user = User.new
@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     remember_me?
     redirect_unverified_user
     session[:api_token] = @user.api_token
-    redirect_to welcome_path
+    redirect_to home_path
   end
 
   def redirect_unverified_user
@@ -22,6 +22,7 @@ class SessionsController < ApplicationController
 
   #for logout
   def destroy
+    flash[:notice] = t('application.logout.logout')
     logout
   end
 
@@ -56,9 +57,5 @@ class SessionsController < ApplicationController
 
   def remember_me?
     cookies.permanent.signed[:api_token] = @user.api_token if params[:remember_me]
-  end
-
-  def redirect_current_user
-    redirect_to home_path, notice: t('.already_registered') if @current_user.present?
   end
 end

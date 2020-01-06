@@ -1,6 +1,6 @@
 class UserFeedsController < ApplicationController
   def home
-    @questions = @current_user.questions.order(updated_at: :desc)
+    @questions = @current_user.related_questions.order(updated_at: :desc)
     @topics = Topic.all
   end
 end
