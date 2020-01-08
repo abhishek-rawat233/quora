@@ -1,7 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: :show
   before_action :redirect_nil_question, only: :show
-  before_action :update_notification, only: :show
 
   def new
     @question = Question.new
@@ -12,16 +11,16 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.question_type = submission_type
     @question.base_user_id = @current_user.id
-    # if @question.save
-    #   flash[:notice] = 'question asked'
-    #   selected_topics = tagged_topics
-      # @question.save_tagged_topics(tagged_topics) if selected_topics.present?
-      # save_notifications
+    if @question.save
+      flash[:notice] = 'question asked'
+      selected_topics = tagged_topics
+      @question.save_tagged_topics(tagged_topics) if selected_topics.present?
+      save_notifications
       ActionCable.server.broadcast 'notification_channel', content: @question, notified_users: @question.related_users.ids.difference([@current_user.id]) if @question.question_type == 'published'
-    #   redirect_to question_path(@question.url_slug), notice: t('.successfully_created')
-    # else
-    #   flash[:notice] = @question.errors
-    # end
+      redirect_to question_path(@question.url_slug), notice: t('.successfully_created')
+    else
+      flash[:notice] = @question.errors
+    end
   end
 
   def index
@@ -52,18 +51,12 @@ class QuestionsController < ApplicationController
   end
 
   def redirect_nil_question
-    render 'no_such_question' if @question.nil?
+    redirect_to home_path, notice: 'no_such_question' if @question.nil?
   end
 
   def save_notifications
     @question.related_users.ids.each do |id|
       @question.notifications.create(base_user_id: id)
     end
-  end
-
-  def update_notification
-    notification = @question.notifications.find_by(base_user_id: @current_user.id)
-    notification.set_status_as_seen
-    @unseen_notifications -= [notification]
   end
 end

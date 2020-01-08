@@ -18,10 +18,7 @@ Rails.application.routes.draw do
     get 'home', to: :home
   end
 
-
-  # resources :questions, only: [:new, :create, :edit, :show]
-
-  # resources :questions, param: :title , only: :show
+  resources :notifications, only: [:update]
 
   controller :sessions do
     get 'login' => :new
@@ -34,5 +31,5 @@ Rails.application.routes.draw do
     post 'resetPassword' => :reset_password
   end
 
-  get '*path', to: redirect('/')
+  # get '*path', to: redirect('/')
 end

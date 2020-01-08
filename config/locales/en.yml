@@ -47,6 +47,7 @@ en:
       already_verified: 'User already verified.'
     verification:
       invalid_url: 'Please enter valid url'
+      verification_successful: 'User verification successful'
     form:
       name: 'Name:'
       email: 'Email:'
