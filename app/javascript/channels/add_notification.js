@@ -17,7 +17,7 @@ export class AddNotification {
   }
 
   appendNotification = () => {
-    this.notificationContainer
+    this.notificationContainer.append(this.notification);
   }
 
   showNotificationHandlerLink = () => {

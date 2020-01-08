@@ -72,7 +72,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_notifications
-    @notification ||= Notification.new
     if @current_user.present?
       @unseen_notifications ||= @current_user.unseen_notifications
     end

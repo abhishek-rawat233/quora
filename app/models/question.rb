@@ -1,4 +1,6 @@
 class Question < ApplicationRecord
+  include VoteConcern
+
   enum question_type: [:drafts, :published]
   ###ASSOCIATION###
   belongs_to :base_user
@@ -11,9 +13,13 @@ class Question < ApplicationRecord
   has_many :related_users, -> { distinct }, through: :topics, source: 'users'
   has_many :notifications,dependent: :destroy
 
+  has_many :answers, dependent: :restrict_with_exception
+  has_many :comments, as: :commentable, dependent: :restrict_with_exception
+  has_many :votes, as: :voteable, dependent: :restrict_with_exception
   ###CALLBACKS###
    before_save :check_title_uniqueness
    before_save :add_url_slug
+   before_save :update_netvotes
 
   ###VALIDATION###
   validate :check_user_credits

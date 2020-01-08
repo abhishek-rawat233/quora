@@ -1,0 +1,11 @@
+<%= form_with url: create_comment_path, local: true do |f| %>
+  <div class="field">
+    <%= f.text_area :content, cols: 50, rows: 1 %>
+  </div>
+  <%= f.hidden_field :question, value: @question.url_slug %>
+  <%= f.hidden_field :commentable_type, id: 'commentable-type' %>
+  <%= f.hidden_field :commentable_id, id: 'commentable-id' %>
+  <div class="button">
+    <%= f.submit value: "submit comment" %>
+  </div>
+<% end %>

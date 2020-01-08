@@ -15,13 +15,15 @@ Rails.application.routes.draw do
   end
 
   controller :user_feeds do
-    get 'home', to: :home
+    get :home
   end
 
+  resources :answers, only: [:new, :create]
 
-  # resources :questions, only: [:new, :create, :edit, :show]
-
-  # resources :questions, param: :title , only: :show
+  controller :comments do
+    get 'new_comment' => :new
+    post :create_comment
+  end
 
   controller :sessions do
     get 'login' => :new

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_03_102811) do
+ActiveRecord::Schema.define(version: 2020_01_06_123359) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -33,6 +33,17 @@ ActiveRecord::Schema.define(version: 2020_01_03_102811) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "content"
+    t.bigint "base_user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "netvotes", default: 0
+    t.bigint "question_id", null: false
+    t.index ["base_user_id"], name: "index_answers_on_base_user_id"
+    t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
   create_table "base_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest"
@@ -45,6 +56,18 @@ ActiveRecord::Schema.define(version: 2020_01_03_102811) do
     t.string "api_token"
     t.string "forgot_password_token"
     t.integer "credits"
+  end
+
+  create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "content"
+    t.bigint "base_user_id", null: false
+    t.string "commentable_type"
+    t.bigint "commentable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "netvotes", default: 0
+    t.index ["base_user_id"], name: "index_comments_on_base_user_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -63,6 +86,7 @@ ActiveRecord::Schema.define(version: 2020_01_03_102811) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "base_user_id", null: false
     t.string "url_slug", null: false
+    t.integer "netvotes", default: 0
     t.index ["base_user_id"], name: "index_questions_on_base_user_id"
   end
 
@@ -88,10 +112,25 @@ ActiveRecord::Schema.define(version: 2020_01_03_102811) do
     t.index ["topic_id"], name: "index_user_favorite_topics_on_topic_id"
   end
 
+  create_table "votes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "vote_type"
+    t.bigint "base_user_id", null: false
+    t.string "voteable_type"
+    t.bigint "voteable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["base_user_id"], name: "index_votes_on_base_user_id"
+    t.index ["voteable_type", "voteable_id"], name: "index_votes_on_voteable_type_and_voteable_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "answers", "base_users"
+  add_foreign_key "answers", "questions"
+  add_foreign_key "comments", "base_users"
   add_foreign_key "notifications", "base_users"
   add_foreign_key "notifications", "questions"
   add_foreign_key "questions", "base_users"
   add_foreign_key "user_favorite_topics", "base_users"
   add_foreign_key "user_favorite_topics", "topics"
+  add_foreign_key "votes", "base_users"
 end
