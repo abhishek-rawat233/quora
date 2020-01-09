@@ -23,7 +23,6 @@ class Question < ApplicationRecord
 
   ###VALIDATION###
   validate :check_user_credits
-  validate :check_title_uniqueness
   validates :title, :content, presence: true, if: -> { question_type == 'published' }
 
   def save_tagged_topics(topic_ids)
@@ -38,14 +37,14 @@ class Question < ApplicationRecord
   end
 
   def check_title_uniqueness
-    if Question.where(title: title).ids.difference([id]).present?
+    if Question.where(question_type: :question_type, title: title).ids.difference([id]).present?
       errors.add(:title, message: I18n.t('.title_already_exists'))
       throw(:abort)
     end
   end
 
   def add_url_slug
-    self.url_slug = self.title.parameterize
+    self.url_slug = title.parameterize
   end
 
   def to_param

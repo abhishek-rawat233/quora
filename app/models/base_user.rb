@@ -14,7 +14,7 @@ class BaseUser < ApplicationRecord
   has_many :user_favorite_topics, dependent: :destroy
   has_many :topics, through: :user_favorite_topics
   has_many :related_questions, -> { distinct }, through: :topics, source: 'questions'
-  has_many :questions
+  has_many :questions, dependent: :destroy
   has_many :notifications,dependent: :destroy
 
   ###VALIDATIONS###
@@ -50,7 +50,7 @@ class BaseUser < ApplicationRecord
   end
 
   def add_image(profile_image)
-    self.image.attach(profile_image)
+    image.attach(profile_image)
   end
 
   def verify
@@ -64,7 +64,7 @@ class BaseUser < ApplicationRecord
   end
 
   def add_topics(topic_ids)
-    topic_ids.difference(self.topics.ids).
+    topic_ids.difference(topics.ids).
     each { |topic_id| user_favorite_topics.create({ topic_id: topic_id }) }
   end
 
