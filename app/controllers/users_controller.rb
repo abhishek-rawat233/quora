@@ -1,11 +1,4 @@
 class UsersController < ApplicationController
-  def edit_question
-
-  end
-
-  def delete_question
-  end
-
   def update#update profile
     @current_user.add_image(get_profile_image) if params.keys.include?("user")
     selected_topics = get_favorite_topics

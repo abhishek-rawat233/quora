@@ -9,14 +9,9 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
-    @question.question_type = submission_type
-    @question.base_user_id = @current_user.id
     if @question.save
       flash[:notice] = 'question asked'
-      save_topics
-      save_notifications
-      redirect_to question_path(@question.url_slug), notice: t('.successfully_created')
+      redirect_to user_question_path(@current_user, @question.url_slug), notice: t('.successfully_created')
     else
       flash[:notice] = @question.errors
     end
@@ -26,11 +21,11 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.question_type = submission_type
     @question.base_user_id = @current_user.id
+    set_topics
   end
 
-  def save_topics
-    selected_topics = tagged_topics
-    @question.save_tagged_topics(selected_topics) if selected_topics.present?
+  def set_topics
+    tagged_topics.each { |topic_id| @question.questions_topics.build( topic_id: topic_id ) }
   end
 
   def index
@@ -62,11 +57,5 @@ class QuestionsController < ApplicationController
 
   def redirect_nil_question
     redirect_to home_path, notice: 'no_such_question' if @question.nil?
-  end
-
-  def save_notifications
-    @question.related_users.ids.each do |id|
-      @question.notifications.create(base_user_id: id)
-    end
   end
 end

@@ -14,16 +14,14 @@ class Question < ApplicationRecord
   ###CALLBACKS###
    before_save :check_title_uniqueness
    before_save :add_url_slug
-   after_save_commit :send_notifications
+   after_create :set_question_notifications
+   after_create :send_notifications
 
   ###VALIDATION###
   validate :check_user_credits
   validate :check_title_uniqueness
   validates :title, :content, presence: true, if: -> { question_type == 'published' }
 
-  def save_tagged_topics(topic_ids)
-    topic_ids.each { |topic_id| questions_topics.create ({topic_id: topic_id}) }
-  end
 
   def check_user_credits
     unless base_user.credits > 0
@@ -33,7 +31,7 @@ class Question < ApplicationRecord
   end
 
   def check_title_uniqueness
-    if Question.where(title: title).ids.difference([id]).present?
+    if Question.published.where(title: title).ids.difference([id]).present?
       errors.add(:title, message: I18n.t('.title_already_exists'))
       throw(:abort)
     end
@@ -45,6 +43,12 @@ class Question < ApplicationRecord
 
   def to_param
     url_slug
+  end
+
+  def set_question_notifications
+    self.related_user_ids.each do |id|
+      self.notifications.create(base_user_id: id)
+    end
   end
 
   def send_notifications

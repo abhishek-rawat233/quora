@@ -3,9 +3,8 @@ class NotificationsController < ApplicationController
   before_action :set_question, only: :update
 
   def update
-    notification_id = @notification.id
     @notification.set_status_as_seen
-    @unseen_notifications -= [notification_id]
+    @unseen_notifications -= [@notification.id]
     redirect_to user_question_path(@current_user, @question)
   end
 
