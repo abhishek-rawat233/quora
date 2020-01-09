@@ -14,6 +14,7 @@ class Question < ApplicationRecord
   ###CALLBACKS###
    before_save :check_title_uniqueness
    before_save :add_url_slug
+   after_save_commit :send_notifications
 
   ###VALIDATION###
   validate :check_user_credits
@@ -44,5 +45,11 @@ class Question < ApplicationRecord
 
   def to_param
     url_slug
+  end
+
+  def send_notifications
+    if self.question_type == 'published'
+      ActionCable.server.broadcast 'notification_channel', content: self, notified_users: self.related_user_ids.difference([self.id])
+    end
   end
 end

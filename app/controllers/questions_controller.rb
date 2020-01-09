@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_action :set_question_instance, only: :create
   before_action :set_question, only: :show
   before_action :redirect_nil_question, only: :show
 
@@ -13,18 +14,27 @@ class QuestionsController < ApplicationController
     @question.base_user_id = @current_user.id
     if @question.save
       flash[:notice] = 'question asked'
-      selected_topics = tagged_topics
-      @question.save_tagged_topics(tagged_topics) if selected_topics.present?
+      save_topics
       save_notifications
-      ActionCable.server.broadcast 'notification_channel', content: @question, notified_users: @question.related_users.ids.difference([@current_user.id]) if @question.question_type == 'published'
       redirect_to question_path(@question.url_slug), notice: t('.successfully_created')
     else
       flash[:notice] = @question.errors
     end
   end
 
+  def set_question_instance
+    @question = Question.new(question_params)
+    @question.question_type = submission_type
+    @question.base_user_id = @current_user.id
+  end
+
+  def save_topics
+    selected_topics = tagged_topics
+    @question.save_tagged_topics(selected_topics) if selected_topics.present?
+  end
+
   def index
-    @questions = @current_user.questions.where(question_type: :published).order(updated_at: :desc)
+    @questions = @current_user.questions.published.order(updated_at: :desc)
   end
 
   def update
