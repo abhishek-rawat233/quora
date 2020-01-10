@@ -5,5 +5,13 @@ class Vote < ApplicationRecord
   belongs_to :voteable, polymorphic: true
   belongs_to :base_users
 
+  ###CALLBACKS###
+  after_save :change_netvotes
 
+  ###VALIDATIONS###
+  validates :base_user_id, uniqueness: { scope: :voteable}
+
+  def change_netvotes
+    voteable.update_netvotes
+  end
 end

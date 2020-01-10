@@ -1,5 +1,5 @@
 module VoteConcern
   def update_netvotes
-    netvotes = votes.upvote - votes.downvote
+    update(netvotes: votes.upvote.count - votes.downvote.count)
   end
 end

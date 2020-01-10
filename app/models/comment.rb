@@ -1,5 +1,5 @@
 class Comment < ApplicationRecord
-  # include VoteConcern
+  include VoteConcern
 
   ###VALIDATIONS###
   validates :content, presence: true

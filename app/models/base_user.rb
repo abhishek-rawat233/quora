@@ -5,8 +5,6 @@ class BaseUser < ApplicationRecord
   ###CALLBACKS###
   before_create :set_api_token
   after_create_commit :set_verification_token
-  # after_
-  # after_update :set_credits, if: [:verified_changed?, :verified?]
 
 
   ####association####
@@ -66,6 +64,14 @@ class BaseUser < ApplicationRecord
   def add_topics(topic_ids)
     topic_ids.difference(topics.ids).
     each { |topic_id| user_favorite_topics.create({ topic_id: topic_id }) }
+  end
+
+  def increment_credits
+    update(credits: credits + 1)
+  end
+
+  def decrement_credits
+    update(credits: credits - 1)
   end
 
   private

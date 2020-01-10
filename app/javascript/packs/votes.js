@@ -1,25 +1,23 @@
 class Votes {
   constructor (options) {
-    this.upvotes = $(upvote);
-    this.downvotes = $(downvote);
-    this.netvotes = $(netvote);
+    this.upvotes = $(options.upvote);
+    this.downvotes = $(options.downvote);
   }
 
   incrementVotes = () => {
     this.netvotesCount += 1;
-    this.netvotesElement.text(netvotesCount);
+    this.netvotesElement.text(this.netvotesCount);
   }
 
   decrementVotes = () => {
     this.netvotesCount -= 1;
-    this.netvotesElement.text(netvotesCount);
-
+    this.netvotesElement.text(this.netvotesCount);
   }
 
   upvotesHandler = (e) => {
     this.upvoteElement = $(e.currentTarget);
     this.downvoteElement = $(this.upvoteElement.data('downvoteId'));
-    this.netvotesElement = $(this.upvoteElement.data('newvoteId'));
+    this.netvotesElement = $(this.upvoteElement.data('netvoteId'));
     this.netvotesCount = parseInt(this.netvotesElement.text());
     var isUpvoteClicked = this.upvoteElement.data('clicked');
     if (isUpvoteClicked) {
@@ -37,6 +35,7 @@ class Votes {
     this.downvoteElement = $(e.currentTarget);
     this.upvoteElement = $(this.downvoteElement.data('upvoteId'));
     this.netvotesElement = $(this.downvoteElement.data('netvoteId'));
+    this.netvotesCount = parseInt(this.netvotesElement.text());
     var isDownvoteClicked = this.downvoteElement.data('clicked');
     if (isDownvoteClicked) {
       this.incrementVotes();
@@ -48,7 +47,6 @@ class Votes {
     }
     this.downvoteElement.data('clicked', !isDownvoteClicked);
   }
-
 
   addEventToUpvotes = () => {
     this.upvotes.on('click', this.upvotesHandler);
@@ -64,13 +62,12 @@ class Votes {
   }
 }
 
-var options = {
-  upvoteClass: '.upvote',
-  downvote: '.downvote',
-  netvote: '.netvote'
-}
-
 $(document).ready(() => {
+  var options = {
+    upvote: '.upvote',
+    downvote: '.downvote'
+  };
+
   votes = new Votes(options);
   votes.init();
 });

@@ -8,10 +8,11 @@ class CommentsController < ApplicationController
 
   def create_comment
     @comment = Comment.new(comment_params)
+    # debugger
     if @comment.save
       flash[:notice] = 'comment successfully created'
     else
-      flash[:notice] = @comment.errors
+      flash[:notice] = @comment.errors.full_messages
     end
     redirect_to user_question_path(@current_user, @question)
   end
@@ -21,7 +22,7 @@ class CommentsController < ApplicationController
   end
 
   def set_question
-    @question = Question.find_by(url_slug: params[:commentable_id])
+    @question = Question.find_by(url_slug: params[:question])
   end
 
   def set_params

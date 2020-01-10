@@ -19,7 +19,6 @@ class Question < ApplicationRecord
   ###CALLBACKS###
    before_save :check_title_uniqueness
    before_save :add_url_slug
-   before_save :update_netvotes
 
   ###VALIDATION###
   validate :check_user_credits

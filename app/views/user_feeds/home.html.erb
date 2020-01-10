@@ -3,6 +3,9 @@
 
 <h2>Question Factory</h2>
 <% @questions.each do |question| %>
+  <div class='votes'>
+    <%= question.netvotes %>
+  </div>
   <%= link_to user_question_path(@current_user, question) do %>
   <div class="question-container">
     <div class="question">

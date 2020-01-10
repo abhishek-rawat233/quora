@@ -1,13 +1,27 @@
 <%= javascript_pack_tag 'comment' %>
+<%= javascript_pack_tag 'votes' %>
 
 <div id='comment-form' style='display: none;'>
   <%= render 'comment_form' %>
 </div>
 
-
+<div class='votes'>
+  <i class="fa fa-sort-up fa-2x upvote" id= "upvoteQuestion<%= @question.id %>" data-downvote-id="downvoteQuestion<%= @question.id %>" data-netvote-id="netvoteQuestion<%= @question.id %>" data-clicked="false" data-voteable-type="Question" data-voteable-id="<%= @question.id %>" value='upvote'></i>
+  <span class='netvote'><h5><%= @question.netvotes %></h5></span>
+  <i class="fa fa-sort-down fa-2x downvote" id= "downvoteQuestion<%= @question.id %>" data-upvote-id="upvoteQuestion<%= @question.id %>" data-netvote-id="netvoteQuestion<%= @question.id %>" data-clicked="false" data-voteable-type="Question" data-voteable-id="<%= @question.id %>" value='downvote'></i>
+</div>
 <h2>Title: <%= @question.title %></h2>
 <h3>Content: <%= @question.content %></h3>
 <div class='comment', id="Question<%= @question.url_slug %>">
+  <% comments = @question.comments %>
+  <% comments.each do |comment| %>
+    <div class='votes'>
+      <i class="fa fa-sort-up fa-2x upvote" id= "upvoteComment<%= comment.id %>" data-downvote-id="downvoteComment<%= comment.id %>" data-netvote-id="netvoteComment<%= comment.id %>" data-clicked="false" data-voteable-type="Comment" data-voteable-id="<%= comment.id %>" value='upvote'></i>
+      <span class='netvote'><h5><%= comment.netvotes %></h5></span>
+      <i class="fa fa-sort-down fa-2x downvote" id= "downvoteComment<%= comment.id %>" data-upvote-id="upvoteQuestion<%= comment.id %>" data-netvote-id="netvoteComment<%= comment.id %>" data-clicked="false" data-voteable-type="Comment" data-voteable-id="<%= comment.id %>" value='downvote'></i>
+    </div>
+    <%= comment.content %>
+  <% end %>
   <%= link_to 'comment', '#', class: 'comments', data: {path: create_comment_path, commentable_type: 'Question', commentable_id: @question.url_slug }, remote: true %>
 </div>
 
@@ -25,10 +39,24 @@
 <% if @answers.present? %>
   <% @answers.each do |answer| %>
     <div class='answer'>
-      <%= answer.content %>
-      <div class='comment', id="Answer<%= @question.url_slug %>">
-        <%= link_to 'comment', '#', class: 'comments', data: {path: create_comment_path, commentable_type: 'Answer', commentable_id: @question.id, remote: true} %>
+      <div class='votes'>
+        <i class="fa fa-sort-up fa-2x upvote" id= "upvoteAnswer<%= answer.id %>" data-upvote-id="upvoteAnswer<%= answer.id %>" data-netvote-id="netvoteAnswer<%= answer.id %>" data-clicked="false" data-voteable-type="Answer" data-voteable-id="<%= answer.id %>" value='upvote'></i>
+        <span class='netvote'><h5><%= answer.netvotes %></h5></span>
+        <i class="fa fa-sort-down fa-2x downvote" id= "downvoteAnswer<%= answer.id %>" data-upvote-id="upvoteAnswer<%= answer.id %>" data-netvote-id="netvoteAnswer<%= answer.id %>" data-clicked="false" data-voteable-type="Answer" data-voteable-id="<%= answer.id %>" value='downvote'></i>
       </div>
+      <%= answer.content %>
+      <% comments = answer.comments %>
+      <% comments.each do |comment| %>
+        <div class='comment', id="Answer<%= answer.id %>">
+          <div class='votes'>
+            <i class="fa fa-sort-up fa-2x upvote" id= "upvoteComment<%= comment.id %>" data-downvote-id="downvoteComment<%= comment.id %>" data-netvote-id="netvoteComment<%= comment.id %>" data-clicked="false" data-voteable-type="Comment" data-voteable-id="<%= comment.id %>" value='upvote'></i>
+            <span class='netvote'><h5><%= comment.netvotes %></h5></span>
+            <i class="fa fa-sort-down fa-2x downvote" id= "downvoteComment<%= comment.id %>" data-upvote-id="upvoteQuestion<%= comment.id %>" data-netvote-id="netvoteComment<%= comment.id %>" data-clicked="false" data-voteable-type="Comment" data-voteable-id="<%= comment.id %>" value='downvote'></i>
+          </div>
+          <%= comment.content %>
+        </div>
+        <% end %>
+      <%= link_to 'comment', '#', class: 'comments', data: {path: create_comment_path, commentable_type: 'Answer', commentable_id: answer.id, remote: true} %>
     </div>
   <% end %>
 <% end %>
