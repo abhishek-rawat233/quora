@@ -29,6 +29,8 @@ Rails.application.routes.draw do
     post :create_comment
   end
 
+  resources :notifications, only: [:update]
+
   controller :sessions do
     get 'login' => :new
     post 'login' => :login
@@ -40,5 +42,5 @@ Rails.application.routes.draw do
     post 'resetPassword' => :reset_password
   end
 
-  get '*path', to: redirect('/')
+  # get '*path', to: redirect('/')
 end

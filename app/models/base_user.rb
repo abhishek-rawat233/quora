@@ -4,7 +4,10 @@ class BaseUser < ApplicationRecord
 
   ###CALLBACKS###
   before_create :set_api_token
-  after_create_commit :set_verification_token
+  before_save :set_credits, if: [:verified_changed?, :verified?]
+  after_create :set_verification_token
+  after_create :send_verification_mail
+
 
 
   ####association####
@@ -30,7 +33,7 @@ class BaseUser < ApplicationRecord
     BaseUserMailer.reset_password(self).deliver
   end
 
-    def send_verification_mail
+  def send_verification_mail
     BaseUserMailer.verify(self).deliver_later
   end
 
@@ -53,17 +56,28 @@ class BaseUser < ApplicationRecord
 
   def verify
     self.verified = true
-    set_credits
     save
   end
 
   def set_credits
-    self.credits = 5 if verified? && verified_changed?
+    self.credits = 5
   end
 
-  def add_topics(topic_ids)
-    topic_ids.difference(topics.ids).
-    each { |topic_id| user_favorite_topics.create({ topic_id: topic_id }) }
+  def add_topics(new_topic_ids)
+    old_topic_ids = user_favorite_topic_ids
+    common_topic_ids = old_topic_ids & new_topic_ids
+    UserFavoriteTopic.where(id: old_topic_ids - common_topic_ids).destroy_all
+    new_topic_ids.difference(common_topic_ids).each do |topic_id|
+      user_favorite_topics.create({ topic_id: topic_id })
+    end
+  end
+
+  def get_profile_image
+    if image.attached?
+      image
+    else
+      "default_profile_image.png"
+    end
   end
 
   def increment_credits
@@ -77,6 +91,5 @@ class BaseUser < ApplicationRecord
   private
   def set_verification_token
     update(verification_token: generate_token("verification_token"))
-    send_verification_mail
   end
 end

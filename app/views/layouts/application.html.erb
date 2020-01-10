@@ -36,7 +36,7 @@
             <%= 'No Notifications' unless notifications_present %>
             <% @unseen_notifications.each do |notification| %>
             <% question = notification.question %>
-            <%= link_to question.title, user_question_path(@current_user, question), class: "dropdown-item" %>
+            <%= link_to question.title, notification_path(notification), method: :patch, class: "dropdown-item" %>
             <% end %>
           </div>
         </div>

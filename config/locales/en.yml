@@ -39,6 +39,8 @@ en:
       already_registered: 'User is already signed in.'
     redirect_invalid_user:
       contact_help: 'Enter correct url or contact XXXXXXXXXXX if issue persists.'
+  notification:
+    no_such_notification: 'Invalid notification or notification subject deleted'
   registration:
     create:
       user_creation_successful: 'User successfully registered. Please verify email using link send.'
@@ -47,6 +49,7 @@ en:
       already_verified: 'User already verified.'
     verification:
       invalid_url: 'Please enter valid url'
+      verification_successful: 'User verification successful'
     form:
       name: 'Name:'
       email: 'Email:'
@@ -98,10 +101,10 @@ en:
     welcome:
       welcome: 'WELCOME '
   users:
-    edit_profile:
+    edit:
       upload_profile_image: 'upload your profile pic'
       back: 'back'
-    update_profile:
+    update:
       successfully_uploaded: 'successfully uploaded'
   user_feeds:
   base_user_mailer:

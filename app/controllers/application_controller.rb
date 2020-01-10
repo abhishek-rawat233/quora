@@ -18,8 +18,8 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     @current_user ||= User.find_by(api_token: session[:api_token]) || get_api_stored_user
-    set_profile_image if @current_user.present?
-  end
+    @profile_image ||= @current_user.get_profile_image if @current_user.present?
+end
 
   def get_api_stored_user
     user ||= User.find_by(api_token: cookies.signed[:api_token])
@@ -56,18 +56,14 @@ class ApplicationController < ActionController::Base
   end
 
   def check_user_validity
-    redirect_to login_url, notice: t('application.check_user_validity.authentication_failure') unless @user.present? && @user.validate_password(params[:password])
+    unless @user.present? && @user.validate_password(params[:password])
+      redirect_to login_url, notice: t('application.check_user_validity.authentication_failure')
+    end
   end
 
   def redirect_current_user
-    redirect_to home_path, notice: t('application.redirect_current_user.already_registered') if @current_user.present?
-  end
-
-  def set_profile_image
-    if @current_user.image.attached?
-      @profile_image ||= @current_user.image
-    else
-      @profile_image ||= "default_profile_image.png"
+    if @current_user.present?
+      redirect_to home_path, notice: t('application.redirect_current_user.already_registered')
     end
   end
 
