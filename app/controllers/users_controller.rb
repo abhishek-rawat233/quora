@@ -1,12 +1,17 @@
 class UsersController < ApplicationController
-  def update#update profile
-    @current_user.add_image(get_profile_image) if params.keys.include?("user")
-    selected_topics = get_favorite_topics
-    @current_user.add_topics(selected_topics) if selected_topics.present?
+  #update profile
+  def update
+    debugger
+    if params.keys.include?("user")
+      @current_user.add_image(get_profile_image) unless params[:user][:profile_image].nil?
+      selected_topics = get_favorite_topics
+      @current_user.add_topics(selected_topics)
+    end
     redirect_to user_path, notice: t('.successfully_uploaded')
   end
 
-  def edit#edit profile
+  #edit profile
+  def edit
     @topics = Topic.all
   end
 
@@ -15,11 +20,11 @@ class UsersController < ApplicationController
   end
 
   def get_favorite_topics
-    params[:user][:topic_id].map! { |topic_id| topic_id.to_i }
+    params[:user][:topic_id].map!(&:to_i)
   end
 
   def mark_all_as_seen
-    @unseen_notifications.each { |notification| notification.set_status_as_seen }
+    @unseen_notifications.map(&:set_status_as_seen)
     @unseen_notifications = Notification.none
   end
 end

@@ -4,7 +4,6 @@ class Question < ApplicationRecord
   belongs_to :base_user
 
   has_many_attached :pdfs
-  has_many :user_favorite_topics
 
   has_many :questions_topics, dependent: :destroy
   has_many :topics, through: :questions_topics
@@ -19,8 +18,7 @@ class Question < ApplicationRecord
 
   ###VALIDATION###
   validate :check_user_credits
-  validate :check_title_uniqueness
-  validates :title, :content, presence: true, if: -> { question_type == 'published' }
+  validates :title, :content, presence: { scope: :published } #true, if: -> { question_type == 'published' }
 
 
   def check_user_credits
@@ -31,10 +29,15 @@ class Question < ApplicationRecord
   end
 
   def check_title_uniqueness
-    if Question.published.where(title: title).ids.difference([id]).present?
+    # if Question.published.where(question_type: :question_type, title: title).ids.difference([id]).present?
+    if Question.exists?(question_type: :question_type, title: :title)
       errors.add(:title, message: I18n.t('.title_already_exists'))
       throw(:abort)
     end
+  end
+
+  def set_topics(topic_list)
+    topic_list.each { |topic_id| @question.questions_topics.build( topic_id: topic_id ) }
   end
 
   def add_url_slug
@@ -46,14 +49,14 @@ class Question < ApplicationRecord
   end
 
   def set_question_notifications
-    self.related_user_ids.each do |id|
-      self.notifications.create(base_user_id: id)
+    related_user_ids.each do |id|
+      notifications.create(base_user_id: id)
     end
   end
 
   def send_notifications
-    if self.question_type == 'published'
-      ActionCable.server.broadcast 'notification_channel', content: self, notified_users: self.related_user_ids.difference([self.id])
+    if published?
+      ActionCable.server.broadcast 'notification_channel', content: self, notified_users: related_user_ids.difference([id])
     end
   end
 end

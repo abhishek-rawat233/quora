@@ -1,5 +1,7 @@
+<%= javascript_pack_tag 'selection_box_change' %>
+
 <h2>Edit Profile</h2>
-<%= form_with model: @current_user, url: edit_user_path do |f| %>
+<%= form_with model: @current_user, url: user_path do |f| %>
   <div class="field">
     <%= f.label :profile_image, t('.upload_profile_image') %>
     <%= f.file_field :profile_image, accept: 'image/png,image/gif,image/jpeg' %>
@@ -7,7 +9,7 @@
 
   <div class="select">
     <%= f.label 'topic_id' %>
-    <%= f.select 'topic_id', @topics.map { |topic| [ topic.name, topic.id ] }, {prompt: true, include_hidden: false}, {multiple: true} %>
+    <%= f.select 'topic_id', options_for_select(@topics.map { |topic| [ topic.name, topic.id ] }, @current_user.topic_ids) , {}, {multiple: true, class: 'selection-box'} %>
   </div>
 
   <%= submit_tag %>

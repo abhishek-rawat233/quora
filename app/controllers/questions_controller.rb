@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :set_question_instance, only: :create
-  before_action :set_question, only: :show
+  before_action :set_question, only: [:show, :edit, :update, :destroy]
   before_action :redirect_nil_question, only: :show
 
   def new
@@ -10,38 +10,45 @@ class QuestionsController < ApplicationController
 
   def create
     if @question.save
-      flash[:notice] = 'question asked'
       redirect_to user_question_path(@current_user, @question.url_slug), notice: t('.successfully_created')
     else
-      flash[:notice] = @question.errors
+      flash[:notice] = question_errors
     end
   end
 
   def set_question_instance
-    @question = Question.new(question_params)
-    @question.question_type = submission_type
-    @question.base_user_id = @current_user.id
-    set_topics
-  end
-
-  def set_topics
-    tagged_topics.each { |topic_id| @question.questions_topics.build( topic_id: topic_id ) }
+    @question = Question.new(question_params.merge(question_type: params[:commit], base_user_id: @current_user.id))
+    @question.set_topics(tagged_topics)
   end
 
   def index
-    @questions = @current_user.questions.published.order(updated_at: :desc)
+    user = BaseUser.includes(:questions).find_by(id: @current_user.id)
+    @questions = user.questions.published.order(updated_at: :desc)
+  end
+
+  def edit
+    @topics = Topic.all
   end
 
   def update
-    #to be filled...
+    if @question.update(question_params)
+      redirect_to home_path, notice: 'question successfully edited'
+    else
+      flash['notice'] = @question.errors.full_messages
+    end
   end
 
-  def submission_type
-    params[:commit]
+  def destroy
+    if @question.destroy
+      redirect_to user_questions_path(@current_user), notice: 'Product was successfully destroyed'
+    else
+      redirect_to user_questions_path(@current_user), notice: @question.errors.full_messages
+    end
   end
+
 
   def tagged_topics
-    params[:question][:topics].map! { |id| id.to_i }
+    params[:question][:topics].map!(&:to_i)
   end
 
   def question_params
@@ -57,5 +64,11 @@ class QuestionsController < ApplicationController
 
   def redirect_nil_question
     redirect_to home_path, notice: 'no_such_question' if @question.nil?
+  end
+
+  def question_errors
+    error = ""
+    @question.errors.each_key { |key, value| error.concat("#{key} #{value}\n") }
+    error
   end
 end
