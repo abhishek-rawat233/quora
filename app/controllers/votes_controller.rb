@@ -1,14 +1,21 @@
 class VotesController < ApplicationController
-  def update
+  before_action :get_vote, only: :update
+
+  def edit
     @vote = Vote.new
-    if @vote.update(vote_params)
-      p '#########################3333'
-    else
-      p '$$$$$$$$$$$$$$$$$$$$$$$$$$$44'
+  end
+
+  def update
+    if @vote.update(vote_type: params[:button])
+      render json: { netvotes: @vote.voteable.netvotes }
     end
   end
 
+  def get_vote
+    @vote = Vote.find_by(vote_params) || Vote.new(vote_params)
+  end
+
   def vote_params
-    params(:vote_type, :base_user_id, :voteable_type, :voteable_id).permit
+    params.permit(:base_user_id, :voteable_type, :voteable_id)
   end
 end

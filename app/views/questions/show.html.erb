@@ -6,9 +6,7 @@
 </div>
 
 <div class='votes'>
-  <i class="fa fa-sort-up fa-2x upvote" id= "upvoteQuestion<%= @question.id %>" data-downvote-id="downvoteQuestion<%= @question.id %>" data-netvote-id="netvoteQuestion<%= @question.id %>" data-clicked="false" data-voteable-type="Question" data-voteable-id="<%= @question.id %>" value='upvote'></i>
-  <span class='netvote'><h5><%= @question.netvotes %></h5></span>
-  <i class="fa fa-sort-down fa-2x downvote" id= "downvoteQuestion<%= @question.id %>" data-upvote-id="upvoteQuestion<%= @question.id %>" data-netvote-id="netvoteQuestion<%= @question.id %>" data-clicked="false" data-voteable-type="Question" data-voteable-id="<%= @question.id %>" value='downvote'></i>
+  <%= render 'vote_form', voteType: 'Question', voteId: @question.id, base_model: @question %>
 </div>
 <h2>Title: <%= @question.title %></h2>
 <h3>Content: <%= @question.content %></h3>
@@ -16,9 +14,7 @@
   <% comments = @question.comments %>
   <% comments.each do |comment| %>
     <div class='votes'>
-      <i class="fa fa-sort-up fa-2x upvote" id= "upvoteComment<%= comment.id %>" data-downvote-id="downvoteComment<%= comment.id %>" data-netvote-id="netvoteComment<%= comment.id %>" data-clicked="false" data-voteable-type="Comment" data-voteable-id="<%= comment.id %>" value='upvote'></i>
-      <span class='netvote'><h5><%= comment.netvotes %></h5></span>
-      <i class="fa fa-sort-down fa-2x downvote" id= "downvoteComment<%= comment.id %>" data-upvote-id="upvoteQuestion<%= comment.id %>" data-netvote-id="netvoteComment<%= comment.id %>" data-clicked="false" data-voteable-type="Comment" data-voteable-id="<%= comment.id %>" value='downvote'></i>
+      <%= render 'vote_form', voteType: 'Comment', voteId: comment.id, base_model: comment %>
     </div>
     <%= comment.content %>
   <% end %>
@@ -38,20 +34,16 @@
 
 <% if @answers.present? %>
   <% @answers.each do |answer| %>
-    <div class='answer'>
+    <div class='answer', id="Answer<%= answer.id %>">
       <div class='votes'>
-        <i class="fa fa-sort-up fa-2x upvote" id= "upvoteAnswer<%= answer.id %>" data-upvote-id="upvoteAnswer<%= answer.id %>" data-netvote-id="netvoteAnswer<%= answer.id %>" data-clicked="false" data-voteable-type="Answer" data-voteable-id="<%= answer.id %>" value='upvote'></i>
-        <span class='netvote'><h5><%= answer.netvotes %></h5></span>
-        <i class="fa fa-sort-down fa-2x downvote" id= "downvoteAnswer<%= answer.id %>" data-upvote-id="upvoteAnswer<%= answer.id %>" data-netvote-id="netvoteAnswer<%= answer.id %>" data-clicked="false" data-voteable-type="Answer" data-voteable-id="<%= answer.id %>" value='downvote'></i>
+        <%= render 'vote_form', voteType: 'Answer', voteId: answer.id, base_model: answer %>
       </div>
       <%= answer.content %>
       <% comments = answer.comments %>
       <% comments.each do |comment| %>
-        <div class='comment', id="Answer<%= answer.id %>">
+        <div class='comment'>
           <div class='votes'>
-            <i class="fa fa-sort-up fa-2x upvote" id= "upvoteComment<%= comment.id %>" data-downvote-id="downvoteComment<%= comment.id %>" data-netvote-id="netvoteComment<%= comment.id %>" data-clicked="false" data-voteable-type="Comment" data-voteable-id="<%= comment.id %>" value='upvote'></i>
-            <span class='netvote'><h5><%= comment.netvotes %></h5></span>
-            <i class="fa fa-sort-down fa-2x downvote" id= "downvoteComment<%= comment.id %>" data-upvote-id="upvoteQuestion<%= comment.id %>" data-netvote-id="netvoteComment<%= comment.id %>" data-clicked="false" data-voteable-type="Comment" data-voteable-id="<%= comment.id %>" value='downvote'></i>
+            <%= render 'vote_form', voteType: 'Comment', voteId: comment.id, base_model: comment %>
           </div>
           <%= comment.content %>
         </div>

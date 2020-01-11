@@ -1,0 +1,9 @@
+<%= form_with model: @vote, url: update_votes_path, method: :post do |form| %>
+  <%= form.hidden_field :vote_form_token, value: @current_user %>
+  <%= form.hidden_field :base_user_id, value: @current_user.id %>
+  <%= form.hidden_field :voteable_type, value: voteType, id: 'voteable-type' %>
+  <%= form.hidden_field :voteable_id, value: voteId, id: 'voteable-id' %>
+  <%= form.button fa_icon("sort-up 2x"), class: "upvote", id: "upvote#{voteType}#{voteId}", data: {downvote_id: "#downvote#{voteType}#{voteId}", netvote_id: "#netvote#{voteType}#{voteId}", clicked: false, voteable_type: voteType, voteable_id: voteId }, value: 'upvote', type: 'submit' %>
+  <span class="netvote" id="netvote<%= "#{voteType}#{voteId}" %>" ><%= base_model.netvotes %></span>
+  <%= form.button fa_icon("sort-down 2x"), class: "downvote", id: "downvote#{voteType}#{voteId}", data: {upvote_id: "#upvote#{voteType}#{voteId}", netvote_id: "#netvote#{voteType}#{voteId}", clicked: false, voteable_type: voteType, voteable_id: voteId }, value: 'downvote', type: 'submit' %>
+<% end %>

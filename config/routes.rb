@@ -18,11 +18,9 @@ Rails.application.routes.draw do
     get :home
   end
 
-  match '/update_votes' => 'votes#update', via: :put
+  match '/update_votes' => 'votes#update', via: :all
 
   resources :answers, only: [:new, :create]
-
-  resources :votes, only: :update
 
   controller :comments do
     get 'new_comment' => :new

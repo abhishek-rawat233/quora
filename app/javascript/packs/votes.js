@@ -2,50 +2,52 @@ class Votes {
   constructor (options) {
     this.upvotes = $(options.upvote);
     this.downvotes = $(options.downvote);
-  }
-
-  incrementVotes = () => {
-    this.netvotesCount += 1;
-    this.netvotesElement.text(this.netvotesCount);
-  }
-
-  decrementVotes = () => {
-    this.netvotesCount -= 1;
-    this.netvotesElement.text(this.netvotesCount);
+    this.ajaxOptions = options.ajaxOptions;
   }
 
   upvotesHandler = (e) => {
     this.upvoteElement = $(e.currentTarget);
     this.downvoteElement = $(this.upvoteElement.data('downvoteId'));
     this.netvotesElement = $(this.upvoteElement.data('netvoteId'));
-    this.netvotesCount = parseInt(this.netvotesElement.text());
     var isUpvoteClicked = this.upvoteElement.data('clicked');
     if (isUpvoteClicked) {
-      this.decrementVotes();
       this.upvoteElement.removeClass('clicked');
     } else {
-      this.incrementVotes();
       this.upvoteElement.addClass('clicked');
       this.downvoteElement.removeClass('clicked');
     }
     this.upvoteElement.data('clicked', !isUpvoteClicked);
+    this.updateNetVotes();
   }
 
   downvotesHandler = (e) => {
     this.downvoteElement = $(e.currentTarget);
     this.upvoteElement = $(this.downvoteElement.data('upvoteId'));
     this.netvotesElement = $(this.downvoteElement.data('netvoteId'));
-    this.netvotesCount = parseInt(this.netvotesElement.text());
     var isDownvoteClicked = this.downvoteElement.data('clicked');
     if (isDownvoteClicked) {
-      this.incrementVotes();
       this.downvoteElement.removeClass('clicked');
     } else {
-      this.decrementVotes();
       this.downvoteElement.addClass('clicked');
       this.upvoteElement.removeClass('clicked');
     }
     this.downvoteElement.data('clicked', !isDownvoteClicked);
+    this.updateNetVotes();
+  }
+
+  updateNetVotes = () => {
+    var netvotesElement = this.netvotesElement
+    $.ajax({
+      url: this.ajaxOptions.url,
+      type: this.ajaxOptions.method,
+      dataType: this.ajaxOptions.dataType,
+      success: function(data) {
+        netvotesElement.html(data["netvotes"])
+      },
+      failure: function(data) {
+        netvotesElement.html('not working please refresh')
+      }
+    });
   }
 
   addEventToUpvotes = () => {
@@ -65,7 +67,12 @@ class Votes {
 $(document).ready(() => {
   var options = {
     upvote: '.upvote',
-    downvote: '.downvote'
+    downvote: '.downvote',
+    ajaxOptions: {
+      url: '/update_votes',
+      method: 'GET',
+      dataType: 'json'
+    }
   };
 
   votes = new Votes(options);

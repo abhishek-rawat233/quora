@@ -5,6 +5,7 @@ class Comment < ApplicationRecord
   validates :content, presence: true
 
   ###ASSOCIATIONS###
+  has_many :votes, as: :voteable, dependent: :destroy
   belongs_to :commentable, polymorphic: true
 
   ###CALLBACKS###

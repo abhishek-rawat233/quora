@@ -1,4 +1,3 @@
-//<a id="status_changing_link" style="" data-remote="true" rel="nofollow" data-method="patch" href="/users/43/mark_all_as_seen">mark all as seen</a>
 class Comment {
   constructor(options) {
     this.commentsLink = $(options.commentClass);
