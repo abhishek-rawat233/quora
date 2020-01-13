@@ -6,7 +6,6 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = Answer.new(set_answer)
     if @answer.save
       flash[:notice] = 'answer successfully created'
     else
@@ -16,8 +15,10 @@ class AnswersController < ApplicationController
   end
 
   def set_answer
-    { question_id: Question.find_by(url_slug: params[:question]).id,
-      content: params[:user_answer],
-      base_user_id: @current_user.id}
+    options = { question_id: Question.find_by(url_slug: params[:question]).id,
+                content: params[:user_answer],
+                base_user_id: @current_user.id}
+    @answer = Answer.new(options)
+    redirect_to user_home_path, notice: 'no_such_question' if @answer.nil?
   end
 end

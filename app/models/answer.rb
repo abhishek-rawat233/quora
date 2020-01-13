@@ -14,12 +14,12 @@ class Answer < ApplicationRecord
   validates :content, presence: true
 
   def update_credits
-    if netvotes < UPVOTE_CHECK_COUNT && is_point_credited
+    if netvotes < UPVOTE_CHECK_COUNT && point_credited
       base_user.decrement_credits
-      update(is_point_credited: false)
-    elsif netvotes > UPVOTE_CHECK_COUNT && !is_point_credited
+      update(point_credited: false)
+    elsif netvotes > UPVOTE_CHECK_COUNT && !point_credited
       base_user.increment_credits
-      update(is_point_credited: true)
+      update(point_credited: true)
     end
   end
 

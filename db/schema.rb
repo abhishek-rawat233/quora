@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_10_062425) do
+ActiveRecord::Schema.define(version: 2020_01_13_183112) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2020_01_10_062425) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "netvotes", default: 0
     t.bigint "question_id", null: false
-    t.boolean "is_point_credited", default: false
+    t.boolean "point_credited", default: false
     t.index ["base_user_id"], name: "index_answers_on_base_user_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
@@ -71,6 +71,13 @@ ActiveRecord::Schema.define(version: 2020_01_10_062425) do
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
   end
 
+  create_table "follows", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "base_user_id"
+    t.integer "following_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "base_user_id", null: false
     t.bigint "question_id", null: false
@@ -96,6 +103,16 @@ ActiveRecord::Schema.define(version: 2020_01_10_062425) do
     t.bigint "topic_id", null: false
     t.index ["question_id"], name: "index_questions_topics_on_question_id"
     t.index ["topic_id"], name: "index_questions_topics_on_topic_id"
+  end
+
+  create_table "report_abuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "base_user_id", null: false
+    t.string "abusable_type"
+    t.bigint "abusable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["abusable_type", "abusable_id"], name: "index_report_abuses_on_abusable_type_and_abusable_id"
+    t.index ["base_user_id"], name: "index_report_abuses_on_base_user_id"
   end
 
   create_table "topics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -131,6 +148,7 @@ ActiveRecord::Schema.define(version: 2020_01_10_062425) do
   add_foreign_key "notifications", "base_users"
   add_foreign_key "notifications", "questions"
   add_foreign_key "questions", "base_users"
+  add_foreign_key "report_abuses", "base_users"
   add_foreign_key "user_favorite_topics", "base_users"
   add_foreign_key "user_favorite_topics", "topics"
   add_foreign_key "votes", "base_users"

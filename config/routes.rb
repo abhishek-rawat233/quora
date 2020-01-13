@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     end
   end
 
-  match '/update_votes' => 'votes#update', via: :all
+  match '/update_votes' => 'votes#update', via: :get
 
   resources :answers, only: [:new, :create]
 
