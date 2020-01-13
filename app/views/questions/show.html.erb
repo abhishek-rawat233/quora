@@ -4,7 +4,7 @@
 <div id='comment-form' style='display: none;'>
   <%= render 'comment_form' %>
 </div>
-
+<%= render 'posted_by', writer: @question.base_user %>
 <div class='votes'>
   <%= render 'vote_form', voteType: 'Question', voteId: @question.id, base_model: @question %>
 </div>
@@ -17,6 +17,7 @@
       <%= render 'vote_form', voteType: 'Comment', voteId: comment.id, base_model: comment %>
     </div>
     <%= comment.content %>
+    <%= render 'posted_by', writer: comment.base_user %>
   <% end %>
   <%= link_to 'comment', '#', class: 'comments', data: {path: create_comment_path, commentable_type: 'Question', commentable_id: @question.url_slug }, remote: true %>
 </div>
@@ -34,6 +35,7 @@
 
 <% if @answers.present? %>
   <% @answers.each do |answer| %>
+    <%= render 'posted_by', writer: answer.base_user %>
     <div class='answer', id="Answer<%= answer.id %>">
       <div class='votes'>
         <%= render 'vote_form', voteType: 'Answer', voteId: answer.id, base_model: answer %>
@@ -46,6 +48,7 @@
             <%= render 'vote_form', voteType: 'Comment', voteId: comment.id, base_model: comment %>
           </div>
           <%= comment.content %>
+          <%= render 'posted_by', writer: comment.base_user %>
         </div>
         <% end %>
       <%= link_to 'comment', '#', class: 'comments', data: {path: create_comment_path, commentable_type: 'Answer', commentable_id: answer.id, remote: true} %>

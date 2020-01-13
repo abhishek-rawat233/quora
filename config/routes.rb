@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:update , :edit ,:show] do
+    get 'profile', to: 'users#show_profile'
+    resources :follows, only: [:update, :destroy]
     resources :questions
     member do
       patch :mark_all_as_seen

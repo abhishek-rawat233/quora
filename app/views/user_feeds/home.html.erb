@@ -1,13 +1,18 @@
+<%= javascript_pack_tag 'question_filter' %>
+
 <%= link_to 'ask question', new_user_question_path(@current_user) -%> |
-<%= link_to 'user questions', user_questions_path(@current_user) %>
+<%= link_to 'user questions', user_questions_path(@current_user) -%>
+
+<%= label_tag :question_filter, 'filter' -%>
+<%= select_tag :question_filter, options_for_select(['All quesitons', 'related questions', 'posted by followings'], 'related questions'), class: 'question_filter' %>
 
 <h2>Question Factory</h2>
 <% @questions.each do |question| %>
+  <div class="question-container">
   <div class='votes'>
     <%= question.netvotes %>
   </div>
   <%= link_to user_question_path(@current_user, question) do %>
-  <div class="question-container">
     <div class="question">
       <h3><strong>Q:</strong> <%= question.title %></h3>
       <% end %>

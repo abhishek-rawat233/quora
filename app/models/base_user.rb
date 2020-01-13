@@ -8,8 +8,6 @@ class BaseUser < ApplicationRecord
   after_create :set_verification_token
   after_create :send_verification_mail
 
-
-
   ####association####
   has_one_attached :image
   has_many :user_favorite_topics, dependent: :destroy
@@ -17,7 +15,17 @@ class BaseUser < ApplicationRecord
   has_many :related_questions, -> { distinct }, through: :topics, source: 'questions'
   has_many :questions, dependent: :destroy
   has_many :notifications,dependent: :destroy
+  has_many :report_abuses, dependent: :destroy
 
+  has_many :follows
+
+  has_many :follower_relationships, foreign_key: 'following_id', class_name: 'Follow'
+  has_many :followers, through: :follower_relationships, source: 'follower', dependent: :destroy
+
+  has_many :following_relationships, foreign_key: 'base_user_id', class_name: 'Follow'
+  has_many :followings, through: :following_relationships, source: 'following', dependent: :destroy
+
+  has_many :all_questions, through: :followings, source: :questions
   ###VALIDATIONS###
   validates :email, presence: true, uniqueness: true, format: { with: EMAIL_VALIDATOR,
                                               message: "invalid. Please enter valid mail id." }

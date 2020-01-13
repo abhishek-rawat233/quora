@@ -26,4 +26,8 @@ class UsersController < ApplicationController
     @unseen_notifications.map(&:set_status_as_seen)
     @unseen_notifications = Notification.none
   end
+
+  def show_profile
+    @user = User.find_by(id: params[:user_id])
+  end
 end

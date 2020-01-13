@@ -7,6 +7,7 @@ class Comment < ApplicationRecord
   ###ASSOCIATIONS###
   has_many :votes, as: :voteable, dependent: :destroy
   belongs_to :commentable, polymorphic: true
+  belongs_to :base_user
 
   ###CALLBACKS###
   # before_save :update_netvotes
