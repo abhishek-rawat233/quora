@@ -31,6 +31,11 @@ Rails.application.routes.draw do
 
   resources :notifications, only: [:update]
 
+  controller :purchase_credits do
+    get 'offers' => :new
+    post 'get_credits' => :create
+  end
+
   controller :sessions do
     get 'login' => :new
     post 'login' => :login
