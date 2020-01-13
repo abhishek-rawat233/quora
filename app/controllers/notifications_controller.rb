@@ -10,7 +10,7 @@ class NotificationsController < ApplicationController
 
   def set_notification
     @notification = Notification.includes(:question).find_by(id: params[:id])
-    redirect_to home_path, notice: t('.no_such_notification') if @notification.nil?
+    redirect_to user_home_path, notice: t('.no_such_notification') if @notification.nil?
   end
 
   def set_question

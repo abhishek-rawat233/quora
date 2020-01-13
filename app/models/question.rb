@@ -1,14 +1,14 @@
 class Question < ApplicationRecord
-  enum question_type: [:drafts, :published]
+  enum question_type: [:drafted, :published]
   ###ASSOCIATION###
-  belongs_to :base_user
+  belongs_to :author, class_name: 'BaseUser', foreign_key: :base_user_id
 
   has_many_attached :pdfs
 
   has_many :questions_topics, dependent: :destroy
   has_many :topics, through: :questions_topics
   has_many :related_users, -> { distinct }, through: :topics, source: 'users'
-  has_many :notifications,dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   ###CALLBACKS###
    before_save :check_title_uniqueness
@@ -17,19 +17,18 @@ class Question < ApplicationRecord
    after_create :send_notifications
 
   ###VALIDATION###
-  validate :check_user_credits
-  validates :title, :content, presence: { scope: :published } #true, if: -> { question_type == 'published' }
+  validate :check_user_credits, if: :published?
+  validates :title, :content, presence: { scope: :published }
 
 
   def check_user_credits
-    unless base_user.credits > 0
+    unless author.credits > 0
       errors.add('user', message: I18n.t('.questions.check_user_credits.user_credit_low'))
       throw(:abort)
     end
   end
 
   def check_title_uniqueness
-    # if Question.published.where(question_type: :question_type, title: title).ids.difference([id]).present?
     if Question.exists?(question_type: :question_type, title: :title)
       errors.add(:title, message: I18n.t('.title_already_exists'))
       throw(:abort)
@@ -49,7 +48,7 @@ class Question < ApplicationRecord
   end
 
   def set_question_notifications
-    related_user_ids.each do |id|
+    related_user_ids.deifference(base_user_id).each do |id|
       notifications.create(base_user_id: id)
     end
   end

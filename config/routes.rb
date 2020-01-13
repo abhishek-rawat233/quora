@@ -8,14 +8,11 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:update , :edit ,:show] do
+    get 'home', to: :home
     resources :questions
     member do
       patch :mark_all_as_seen
     end
-  end
-
-  controller :user_feeds do
-    get 'home', to: :home
   end
 
   resources :notifications, only: [:update]

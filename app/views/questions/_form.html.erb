@@ -24,7 +24,7 @@
 
   <div class="select">
     <%= form.label 'topics' %>
-    <%= form.select 'topics', options_for_select(@topics.map { |topic| [ topic.name, topic.id ] }, question.topic_ids), {}, {multiple: true, class: 'selection-box'} %>
+    <%= form.select 'topics', options_for_select(@topics.map { |topic| [ topic.name, topic.id ] }, question.topic_ids), {}, {multiple: true, class: 'selection-box', data: {class: 'selection-box'}} %>
   </div>
 
   <div class="button">

@@ -9,7 +9,7 @@
 
   <div class="select">
     <%= f.label 'topic_id' %>
-    <%= f.select 'topic_id', options_for_select(@topics.map { |topic| [ topic.name, topic.id ] }, @current_user.topic_ids) , {}, {multiple: true, class: 'selection-box'} %>
+    <%= f.select 'topic_id', options_for_select(@topics.map { |topic| [ topic.name, topic.id ] }, @current_user.topic_ids) , {}, {multiple: true, class: 'selection-box', data: {class: 'selection-box'}} %>
   </div>
 
   <%= submit_tag %>

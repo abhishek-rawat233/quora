@@ -1,11 +1,9 @@
 class UsersController < ApplicationController
   #update profile
   def update
-    debugger
     if params.keys.include?("user")
       @current_user.add_image(get_profile_image) unless params[:user][:profile_image].nil?
-      selected_topics = get_favorite_topics
-      @current_user.add_topics(selected_topics)
+      @current_user.add_topics(get_favorite_topic_ids)
     end
     redirect_to user_path, notice: t('.successfully_uploaded')
   end
@@ -19,12 +17,16 @@ class UsersController < ApplicationController
     params.require(:user).permit(:profile_image)[:profile_image]
   end
 
-  def get_favorite_topics
+  def get_favorite_topic_ids
     params[:user][:topic_id].map!(&:to_i)
   end
 
   def mark_all_as_seen
     @unseen_notifications.map(&:set_status_as_seen)
     @unseen_notifications = Notification.none
+  end
+
+  def home
+    @questions = @current_user.related_questions.order(updated_at: :desc)
   end
 end
