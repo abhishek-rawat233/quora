@@ -16,7 +16,7 @@ class BaseUser < ApplicationRecord
   has_many :topics, through: :user_favorite_topics
   has_many :related_questions, -> { distinct }, through: :topics, source: 'questions'
   has_many :questions, dependent: :destroy
-  has_many :notifications,dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   ###VALIDATIONS###
   validates :email, presence: true, uniqueness: true, format: { with: EMAIL_VALIDATOR,
@@ -25,7 +25,7 @@ class BaseUser < ApplicationRecord
   validates :password_confirmation, presence: true, on: [:create, :password_digest_changed?]
 
   def unseen_notifications
-    notifications.where(status: :unseen)
+    notifications.unseen
   end
 
   def set_forgot_password_token
@@ -60,7 +60,7 @@ class BaseUser < ApplicationRecord
   end
 
   def set_credits
-    self.credits = 5
+    self.credits = DEFAULT_CREDITS
   end
 
   def add_topics(new_topic_ids)

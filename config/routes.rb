@@ -8,14 +8,11 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:update , :edit ,:show] do
+    get 'home', to: :home
     resources :questions
     member do
       patch :mark_all_as_seen
     end
-  end
-
-  controller :user_feeds do
-    get :home
   end
 
   match '/update_votes' => 'votes#update', via: :all
