@@ -33,7 +33,7 @@ class BaseUser < ApplicationRecord
   validates :password_confirmation, presence: true, on: [:create, :password_digest_changed?]
 
   def unseen_notifications
-    notifications.where(status: :unseen)
+    notifications.unseen
   end
 
   def set_forgot_password_token
@@ -68,7 +68,7 @@ class BaseUser < ApplicationRecord
   end
 
   def set_credits
-    self.credits = 5
+    self.credits = DEFAULT_CREDITS
   end
 
   def add_topics(new_topic_ids)

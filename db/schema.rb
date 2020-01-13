@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_093225) do
+ActiveRecord::Schema.define(version: 2020_01_13_183112) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_093225) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "netvotes", default: 0
     t.bigint "question_id", null: false
-    t.boolean "is_point_credited", default: false
+    t.boolean "point_credited", default: false
     t.index ["base_user_id"], name: "index_answers_on_base_user_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end

@@ -22,7 +22,7 @@ class SelectionBoxChange {
 
 $(document).ready( () => {
   var options = {
-    selectionBoxClass: '.selection-box'
+    selectionBoxClass: 'select[data-class="selection-box"]'
   };
   var selectionBox = new SelectionBoxChange(options);
   selectionBox.init();

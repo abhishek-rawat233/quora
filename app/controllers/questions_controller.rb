@@ -1,7 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :set_question_instance, only: :create
   before_action :set_question, only: [:show, :edit, :update, :destroy]
-  before_action :redirect_nil_question, only: :show
 
   def new
     @question = Question.new
@@ -23,7 +22,7 @@ class QuestionsController < ApplicationController
 
   def index
     user = BaseUser.includes(:questions).find_by(id: @current_user.id)
-    @questions = user.questions.published.order(updated_at: :desc)
+    @questions = user.questions.order(updated_at: :desc)
   end
 
   def edit
@@ -32,7 +31,7 @@ class QuestionsController < ApplicationController
 
   def update
     if @question.update(question_params)
-      redirect_to home_path, notice: 'question successfully edited'
+      redirect_to user_home_path, notice: 'question successfully edited'
     else
       flash['notice'] = @question.errors.full_messages
     end
@@ -60,10 +59,11 @@ class QuestionsController < ApplicationController
   end
 
   def set_question
-    @question = Question.find_by(url_slug: params[:id])
+    @question = Question.eager_load(:answers).find_by(url_slug: params[:id])
+    redirect_nil_question
   end
 
   def redirect_nil_question
-    redirect_to home_path, notice: 'no_such_question' if @question.nil?
+    redirect_to user_home_path, notice: 'no_such_question' if @question.nil?
   end
 end

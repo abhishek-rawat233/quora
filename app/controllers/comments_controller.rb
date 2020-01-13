@@ -8,7 +8,6 @@ class CommentsController < ApplicationController
 
   def create_comment
     @comment = Comment.new(comment_params)
-    # debugger
     if @comment.save
       flash[:notice] = 'comment successfully created'
     else
@@ -23,6 +22,7 @@ class CommentsController < ApplicationController
 
   def set_question
     @question = Question.find_by(url_slug: params[:question])
+    redirect_to user_home_path, notice: 'no_such_question' if @question.nil?
   end
 
   def set_params

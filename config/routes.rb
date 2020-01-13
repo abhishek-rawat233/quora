@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:update , :edit ,:show] do
     get 'profile', to: 'users#show_profile'
+    get 'home', to: :home
     resources :follows, only: [:update, :destroy]
     resources :questions
     member do
@@ -16,11 +17,7 @@ Rails.application.routes.draw do
     end
   end
 
-  controller :user_feeds do
-    get :home
-  end
-
-  match '/update_votes' => 'votes#update', via: :all
+  match '/update_votes' => 'votes#update', via: :get
 
   resources :answers, only: [:new, :create]
 

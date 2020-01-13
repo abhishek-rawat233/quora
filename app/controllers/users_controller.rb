@@ -3,8 +3,7 @@ class UsersController < ApplicationController
   def update
     if params.keys.include?("user")
       @current_user.add_image(get_profile_image) unless params[:user][:profile_image].nil?
-      selected_topics = get_favorite_topics
-      @current_user.add_topics(selected_topics)
+      @current_user.add_topics(get_favorite_topic_ids)
     end
     redirect_to user_path, notice: t('.successfully_uploaded')
   end
@@ -18,7 +17,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:profile_image)[:profile_image]
   end
 
-  def get_favorite_topics
+  def get_favorite_topic_ids
     params[:user][:topic_id].map!(&:to_i)
   end
 
@@ -29,5 +28,9 @@ class UsersController < ApplicationController
 
   def show_profile
     @user = User.find_by(id: params[:user_id])
+  end
+
+  def home
+    @questions = @current_user.related_questions.order(updated_at: :desc)
   end
 end

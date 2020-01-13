@@ -8,13 +8,13 @@ gem 'bcrypt', '~> 3.1.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 #font-awesome
-gem 'font_awesome5_rails'
+gem 'font_awesome5_rails', '>=1.0.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
 # Use mysql2 as the database for Active Record
 gem 'mysql2', '>= 0.4.4'
 # popper
-gem 'popper_js'
+gem 'popper_js', '>=1.14.5'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -41,7 +41,7 @@ gem 'webpacker', '~> 4.0'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'letter_opener'
+  gem 'letter_opener', '>=1.7.0'
 end
 
 group :development do
