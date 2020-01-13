@@ -1,5 +1,6 @@
 class RegistrationController < ApplicationController
-  skip_before_action :redirect_guest_users, except: :verification
+  skip_before_action :redirect_guest_users
+  before_action :redirect_current_user
   before_action :set_user, only: [:create]
   before_action :get_user_by_id, only: :verification
   before_action :redirect_pre_verified_user, only: :verification
@@ -12,16 +13,17 @@ class RegistrationController < ApplicationController
   def create
     if @user.save
       flash[:notice] = t('.user_creation_successful')
+      redirect_to login_path
     else
       flash[:notice] = t('.user_creation_unsuccessful')
+      redirect_to signup_path
     end
-    redirect_to signup_path
   end
 
   def verification
     if @user.verification_token == params[:token]
       @user.verify
-      render "verified"
+      redirect_to login_path, notice: t('.verification_successful')
     else
       redirect_to login_path, notice: t('.invalid_url')
     end

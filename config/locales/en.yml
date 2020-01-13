@@ -39,6 +39,8 @@ en:
       already_registered: 'User is already signed in.'
     redirect_invalid_user:
       contact_help: 'Enter correct url or contact XXXXXXXXXXX if issue persists.'
+  notification:
+    no_such_notification: 'Invalid notification or notification subject deleted'
   registration:
     create:
       user_creation_successful: 'User successfully registered. Please verify email using link send.'
@@ -47,6 +49,7 @@ en:
       already_verified: 'User already verified.'
     verification:
       invalid_url: 'Please enter valid url'
+      verification_successful: 'User verification successful'
     form:
       name: 'Name:'
       email: 'Email:'
@@ -55,6 +58,19 @@ en:
     verfied:
       verified: 'User Verified'
       not_verified: 'User not verified please try again with correct link'
+  questions:
+    check_user_credits:
+      user_credit_low: 'User low on credits. 1 credit is required to ask question'
+    check_title_uniqueness:
+      title_already_exists: 'Title already in use. Please use different one.'
+    new:
+      title: 'Title: '
+      content: 'Content: '
+      publish: 'Publish'
+      save_for_later: 'Save in Drafts'
+      attach_pdfs: 'Attach Pdf docs'
+    create:
+        successfully_created: 'Question successfully created.'
   sessions:
     create:
       unverified: 'Only verified users can login. Please VERIFY.'
@@ -85,11 +101,12 @@ en:
     welcome:
       welcome: 'WELCOME '
   users:
-    edit_profile:
+    edit:
       upload_profile_image: 'upload your profile pic'
       back: 'back'
-    update_profile:
+    update:
       successfully_uploaded: 'successfully uploaded'
+  user_feeds:
   base_user_mailer:
     reset_password:
       dear: 'Dear '

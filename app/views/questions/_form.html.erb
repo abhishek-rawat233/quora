@@ -1,0 +1,34 @@
+<%= javascript_pack_tag 'selection_box_change' %>
+
+<% if notice %>
+  <aside id="notice"><%= notice %></aside>
+<% end %>
+
+<h3>Question</h3>
+
+<%= form_with model: question, url: url_path do |form| %>
+  <div class="field">
+    <%= form.label :title, t('.title') -%>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :content, t('.content') -%>
+    <%= form.text_area :content, cols: 50, rows: 7 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :pdfs, t('.attach_pdfs') -%>
+    <%= form.file_field :pdfs, accept: 'application/pdf', multiple: true %>
+  </div>
+
+  <div class="select">
+    <%= form.label 'topics' %>
+    <%= form.select 'topics', options_for_select(@topics.map { |topic| [ topic.name, topic.id ] }, question.topic_ids), {}, {multiple: true, class: 'selection-box', data: {class: 'selection-box'}} %>
+  </div>
+
+  <div class="button">
+    <%= form.submit value: "published" -%>
+    <%= form.submit value: "drafts" %>
+  </div>
+<% end %>

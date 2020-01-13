@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :set_current_user
   before_action :redirect_guest_users
+  before_action :set_notifications
   before_action :set_locale
 
   def set_locale
@@ -17,7 +18,8 @@ class ApplicationController < ActionController::Base
 
   def set_current_user
     @current_user ||= User.find_by(api_token: session[:api_token]) || get_api_stored_user
-  end
+    @profile_image ||= @current_user.get_profile_image if @current_user.present?
+end
 
   def get_api_stored_user
     user ||= User.find_by(api_token: cookies.signed[:api_token])
@@ -27,7 +29,7 @@ class ApplicationController < ActionController::Base
   def logout
     clear_cookies
     session[:api_token] = nil
-    redirect_to login_path, notice: t('.logout')
+    redirect_to login_path
   end
 
   def clear_cookies
@@ -54,6 +56,20 @@ class ApplicationController < ActionController::Base
   end
 
   def check_user_validity
-    redirect_to login_url, notice: t('.authentication_failure') unless @user.present? && @user.validate_password(params[:password])
+    unless @user.present? && @user.validate_password(params[:password])
+      redirect_to login_url, notice: t('application.check_user_validity.authentication_failure')
+    end
+  end
+
+  def redirect_current_user
+    if @current_user.present?
+      redirect_to user_home_path, notice: t('application.redirect_current_user.already_registered')
+    end
+  end
+
+  def set_notifications
+    if @current_user.present?
+      @unseen_notifications ||= @current_user.unseen_notifications
+    end
   end
 end

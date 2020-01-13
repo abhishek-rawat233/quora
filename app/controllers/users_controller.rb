@@ -1,10 +1,32 @@
 class UsersController < ApplicationController
-  def update_profile
-    @current_user.add_image(get_profile_image) if params.keys.include?("user")
-    redirect_to user_profile_path, notice: t('.successfully_uploaded')
+  #update profile
+  def update
+    if params.keys.include?("user")
+      @current_user.add_image(get_profile_image) unless params[:user][:profile_image].nil?
+      @current_user.add_topics(get_favorite_topic_ids)
+    end
+    redirect_to user_path, notice: t('.successfully_uploaded')
+  end
+
+  #edit profile
+  def edit
+    @topics = Topic.all
   end
 
   def get_profile_image
     params.require(:user).permit(:profile_image)[:profile_image]
+  end
+
+  def get_favorite_topic_ids
+    params[:user][:topic_id].map!(&:to_i)
+  end
+
+  def mark_all_as_seen
+    @unseen_notifications.map(&:set_status_as_seen)
+    @unseen_notifications = Notification.none
+  end
+
+  def home
+    @questions = @current_user.related_questions.order(updated_at: :desc)
   end
 end
