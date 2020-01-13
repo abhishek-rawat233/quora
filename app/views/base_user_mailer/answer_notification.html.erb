@@ -1,0 +1,3 @@
+<h3><%= "#{t('.dear')} #{@user.name}" %></h3>
+
+<p><%= @responder %> <%= t('.mailbody') %><%= link_to 'link', user_question_url(@user.id, @question_url_slug ) %></p>

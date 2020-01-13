@@ -88,6 +88,10 @@ class BaseUser < ApplicationRecord
     update(credits: credits - 1)
   end
 
+  def send_answer_notification_mail(sender, question_slug)
+    BaseUserMailer.answer_notification(self, sender, question_slug).deliver_later
+  end
+
   private
   def set_verification_token
     update(verification_token: generate_token("verification_token"))

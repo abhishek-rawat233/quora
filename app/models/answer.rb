@@ -1,8 +1,9 @@
 class Answer < ApplicationRecord
   include VoteConcern
   ###CALLBACKS###
-  # before_save :update_netvotes
   before_save :update_credits
+  after_create :send_notification_mail
+
   ###ASSOCIATION###
   belongs_to :question
   belongs_to :base_user
@@ -20,5 +21,9 @@ class Answer < ApplicationRecord
       base_user.increment_credits
       update(is_point_credited: true)
     end
+  end
+
+  def send_notification_mail
+    question.base_user.send_answer_notification_mail(self.base_user, question.url_slug)
   end
 end

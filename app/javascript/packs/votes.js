@@ -6,9 +6,14 @@ class Votes {
   }
 
   upvotesHandler = (e) => {
+    e.preventDefault();
     this.upvoteElement = $(e.currentTarget);
     this.downvoteElement = $(this.upvoteElement.data('downvoteId'));
     this.netvotesElement = $(this.upvoteElement.data('netvoteId'));
+    this.voteableId = this.upvoteElement.data('voteableId');
+    this.voteableType  = this.upvoteElement.data('voteableType');
+    this.voteType = this.upvoteElement.val();
+    this.baseUserId = this.upvoteElement.data('baseUserId');
     var isUpvoteClicked = this.upvoteElement.data('clicked');
     if (isUpvoteClicked) {
       this.upvoteElement.removeClass('clicked');
@@ -21,9 +26,14 @@ class Votes {
   }
 
   downvotesHandler = (e) => {
+    e.preventDefault();
     this.downvoteElement = $(e.currentTarget);
     this.upvoteElement = $(this.downvoteElement.data('upvoteId'));
     this.netvotesElement = $(this.downvoteElement.data('netvoteId'));
+    this.voteableId = this.downvoteElement.data('voteableId');
+    this.voteableType  = this.downvoteElement.data('voteableType');
+    this.voteType = this.downvoteElement.val();
+    this.baseUserId = this.downvoteElement.data('baseUserId');
     var isDownvoteClicked = this.downvoteElement.data('clicked');
     if (isDownvoteClicked) {
       this.downvoteElement.removeClass('clicked');
@@ -40,6 +50,11 @@ class Votes {
     $.ajax({
       url: this.ajaxOptions.url,
       type: this.ajaxOptions.method,
+      data: {"voteable_id" : this.voteableId,
+             "voteable_type" : this.voteableType,
+             "vote_type" : this.voteType,
+             "base_user_id": this.baseUserId
+           },
       dataType: this.ajaxOptions.dataType,
       success: function(data) {
         netvotesElement.html(data["netvotes"])

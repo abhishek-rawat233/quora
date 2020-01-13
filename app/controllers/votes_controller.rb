@@ -6,7 +6,7 @@ class VotesController < ApplicationController
   end
 
   def update
-    if @vote.update(vote_type: params[:button])
+    if @vote.update(vote_type: params[:vote_type])
       render json: { netvotes: @vote.voteable.netvotes }
     end
   end
