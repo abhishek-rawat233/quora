@@ -114,5 +114,8 @@ en:
     verify:
       dear: 'Dear '
       mailbody: 'Please verify mail by clicking this link '
+    answer_notification:
+      dear: 'Dear'
+      mailbody: ' has answered your question. Check the answer using '
 
   hello: "Hello world"

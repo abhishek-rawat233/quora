@@ -18,7 +18,10 @@ consumer.subscriptions.create("NotificationChannel", {
       notificationClass: 'dropdown-item',
       notificationHandlerId: '#status_changing_link'
     }
-
-    $(document).ready((new AddNotification(options)).init());
+    var recipients = data.notified_users;
+    var currentUserId = $('#notifications-counter').data('userId');
+    if (recipients.includes(currentUserId)) {
+      $(document).ready((new AddNotification(options)).init());
+    }
   }
 });

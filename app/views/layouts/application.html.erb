@@ -29,7 +29,7 @@
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">Notifications
           <% notifications_present = !@unseen_notifications.length.zero? %>
-        <span id = "notifications-counter" ><%= @unseen_notifications.length if notifications_present %></span></a>
+        <span id = "notifications-counter" data-user-id="<%= @current_user.id %>" ><%= @unseen_notifications.length if notifications_present %></span></a>
         <div class="dropdown-menu dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-555">
           <%= link_to 'mark all as seen', mark_all_as_seen_user_path(@current_user), method: :patch, remote: true, id: "status_changing_link", style: "#{'display: none' unless notifications_present}" %>
           <div id="notifications-container">

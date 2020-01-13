@@ -77,6 +77,8 @@ GEM
     crass (1.0.5)
     erubi (1.9.0)
     ffi (1.11.3)
+    font_awesome5_rails (1.0.0)
+      railties (>= 4.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.7.0)
@@ -214,6 +216,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
+  font_awesome5_rails (>= 1.0.0)
   jbuilder (~> 2.7)
   letter_opener (>= 1.7.0)
   listen (>= 3.0.5, < 3.2)

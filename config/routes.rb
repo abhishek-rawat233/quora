@@ -15,6 +15,15 @@ Rails.application.routes.draw do
     end
   end
 
+  match '/update_votes' => 'votes#update', via: :get
+
+  resources :answers, only: [:new, :create]
+
+  controller :comments do
+    get 'new_comment' => :new
+    post :create_comment
+  end
+
   resources :notifications, only: [:update]
 
   controller :sessions do

@@ -1,4 +1,54 @@
+<%= javascript_pack_tag 'comment' %>
+<%= javascript_pack_tag 'votes' %>
+
+<div id='comment-form' style='display: none;'>
+  <%= render 'comment_form' %>
+</div>
+
+<div class='votes'>
+  <%= render 'vote_form', voteType: 'Question', voteId: @question.id, base_model: @question %>
+</div>
 <h2>Title: <%= @question.title %></h2>
 <h3>Content: <%= @question.content %></h3>
+<div class='comment', id="Question<%= @question.url_slug %>">
+  <% comments = @question.comments %>
+  <% comments.each do |comment| %>
+    <div class='votes'>
+      <%= render 'vote_form', voteType: 'Comment', voteId: comment.id, base_model: comment %>
+    </div>
+    <%= comment.content %>
+  <% end %>
+  <%= link_to 'comment', '#', class: 'comments', data: {path: create_comment_path, commentable_type: 'Question', commentable_id: @question.url_slug }, remote: true %>
+</div>
 
-<%= link_to 'home', user_home_path %>
+<%= form_with model: @answer, url: answers_path do |form| %>
+  <div class="field">
+    <%= form.label :user_answer, t('.answer') %>
+    <%= form.text_area :user_answer, cols: 50, rows: 3 %>
+  </div>
+  <%= form.hidden_field :question, value: @question.url_slug %>
+  <div class="button">
+    <%= form.submit value: "submit answer" %>
+  </div>
+<% end %>
+
+<% if @answers.present? %>
+  <% @answers.each do |answer| %>
+    <div class='answer', id="Answer<%= answer.id %>">
+      <div class='votes'>
+        <%= render 'vote_form', voteType: 'Answer', voteId: answer.id, base_model: answer %>
+      </div>
+      <%= answer.content %>
+      <% comments = answer.comments %>
+      <% comments.each do |comment| %>
+        <div class='comment'>
+          <div class='votes'>
+            <%= render 'vote_form', voteType: 'Comment', voteId: comment.id, base_model: comment %>
+          </div>
+          <%= comment.content %>
+        </div>
+        <% end %>
+      <%= link_to 'comment', '#', class: 'comments', data: {path: create_comment_path, commentable_type: 'Answer', commentable_id: answer.id, remote: true} %>
+    </div>
+  <% end %>
+<% end %>

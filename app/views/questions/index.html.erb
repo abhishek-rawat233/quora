@@ -19,7 +19,7 @@
 <% @questions.published.each do |question| %>
 <%= link_to user_question_path(@current_user, question) do %>
   <div class="question">
-    <h3>Title: <%= question.title %></h3>
+    <h3><strong>Q:</strong> <%= question.title %></h3>
   <% end %>
     <h4><%= question.content %></h4>
     <%= link_to 'edit', edit_user_question_path(@current_user, question) %>

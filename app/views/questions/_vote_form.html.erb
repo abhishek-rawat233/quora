@@ -1,0 +1,5 @@
+<%= form_with model: @vote do |form| %>
+  <%= form.button fa_icon("sort-up 2x"), class: "upvote", id: "upvote#{voteType}#{voteId}", data: {downvote_id: "#downvote#{voteType}#{voteId}", netvote_id: "#netvote#{voteType}#{voteId}", clicked: false, voteable_type: voteType, voteable_id: voteId, base_user_id: @current_user.id }, value: 'upvote' %>
+  <span class="netvote" id="netvote<%= "#{voteType}#{voteId}" %>" ><%= base_model.netvotes %></span>
+  <%= form.button fa_icon("sort-down 2x"), class: "downvote", id: "downvote#{voteType}#{voteId}", data: {upvote_id: "#upvote#{voteType}#{voteId}", netvote_id: "#netvote#{voteType}#{voteId}", clicked: false, voteable_type: voteType, voteable_id: voteId, base_user_id: @current_user.id }, value: 'downvote' %>
+<% end %>
