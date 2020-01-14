@@ -35,4 +35,26 @@ class UsersController < ApplicationController
     @user_following_ids = @current_user.following_ids
     @related_question_ids = @current_user.related_question_ids
   end
+
+  def index
+    @user = BaseUser.eager_load(:questions).find_by(id: @current_user.id)
+    render json: @user, only: [:id, :name], include: {
+      questions: {
+        only: [:content],
+        include: {
+          comments: {
+            only: [:content]
+          },
+         answers: {
+           only: [:content],
+           include: {
+             comments: {
+               only: [:content]
+             }
+           }
+         }
+        }
+      }
+    }
+  end
 end

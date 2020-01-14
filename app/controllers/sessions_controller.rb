@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     remember_me?
     redirect_unverified_user
     session[:api_token] = @user.api_token
-    redirect_to user_home_path
+    redirect_to user_home_path(@user)
   end
 
   def redirect_unverified_user
