@@ -1,7 +1,7 @@
 class Question < ApplicationRecord
   include VoteConcern
 
-  enum question_type: [:drafted, :published]
+  enum question_type: [:drafted, :published, :abusive]
   ###ASSOCIATION###
   belongs_to :author, class_name: 'BaseUser', foreign_key: :base_user_id
 
@@ -62,5 +62,9 @@ class Question < ApplicationRecord
     if published?
       ActionCable.server.broadcast 'notification_channel', content: self, notified_users: related_user_ids.difference([id])
     end
+  end
+
+  def mark_as_abusive
+    update(question_type: :abusive)
   end
 end

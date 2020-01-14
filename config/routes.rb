@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:update , :edit ,:show] do
+    get 'profile', to: 'users#show_profile'
     get 'home', to: :home
+    resources :follows, only: [:update, :destroy]
     resources :questions
     member do
       patch :mark_all_as_seen
@@ -25,6 +27,13 @@ Rails.application.routes.draw do
   end
 
   resources :notifications, only: [:update]
+
+  controller :purchase_credits do
+    get 'offers' => :new
+    post 'get_credits' => :create
+  end
+
+  resources :report_abuses, only: :create
 
   controller :sessions do
     get 'login' => :new

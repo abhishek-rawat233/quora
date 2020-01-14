@@ -25,6 +25,8 @@ gem 'rails-i18n', '~> 6.0'
 gem 'redis', '~> 4.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
+#stripe checkout gem
+gem 'stripe', '>=5.13.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
