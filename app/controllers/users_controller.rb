@@ -31,6 +31,8 @@ class UsersController < ApplicationController
   end
 
   def home
-    @questions = @current_user.related_questions.order(updated_at: :desc)
+    @questions = Question.all.order(updated_at: :desc)
+    @user_following_ids = @current_user.following_ids
+    @related_question_ids = @current_user.related_question_ids
   end
 end

@@ -5,9 +5,12 @@ class ReportAbuse < ApplicationRecord
   belongs_to :base_user
 
   ###CALLBACKS###
-  around_update :set_votes
-  after_save :change_netvotes
+  after_save :check_for_abusive
 
   ###VALIDATIONS###
   validates :base_user_id, uniqueness: { scope: :abusable}
+
+  def check_for_abusive
+    abusable.mark_as_abusive if ReportAbuse.where(abusable_id: abusable_id, abusable_type: abusable_type).count >= REPORT_ABUSIVE_LIMIT
+  end
 end

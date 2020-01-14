@@ -21,7 +21,7 @@
   <div class="question">
     <h3><strong>Q:</strong> <%= question.title %></h3>
   <% end %>
-    <h4><%= question.content %></h4>
+    <h4><%= question.content[0..40].concat('...') %></h4>
     <%= link_to 'edit', edit_user_question_path(@current_user, question) %>
     <%= link_to 'delete', user_question_path(@current_user, question), method: :delete %>
     <br>

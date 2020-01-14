@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_183112) do
+ActiveRecord::Schema.define(version: 2020_01_14_050151) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_183112) do
     t.integer "netvotes", default: 0
     t.bigint "question_id", null: false
     t.boolean "point_credited", default: false
+    t.boolean "abusive", default: false
     t.index ["base_user_id"], name: "index_answers_on_base_user_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
   end
@@ -67,6 +68,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_183112) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "netvotes", default: 0
+    t.boolean "abusive", default: false
     t.index ["base_user_id"], name: "index_comments_on_base_user_id"
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
   end

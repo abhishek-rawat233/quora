@@ -4,22 +4,24 @@
 <%= link_to 'user questions', user_questions_path(@current_user) -%>
 
 <%= label_tag :question_filter, 'filter' -%>
-<%= select_tag :question_filter, options_for_select(['All quesitons', 'related questions', 'posted by followings'], 'related questions'), class: 'question_filter' %>
+<%= select_tag :question_filter, options_for_select(['All quesitons', 'related questions', 'posted by followings'], 'related questions'), {class: 'question_filter', "data-class": 'question-filter'} %>
 
 <h2>Question Factory</h2>
 <% @questions.each do |question| %>
-  <div class="question-container">
-  <div class='votes'>
-    <%= question.netvotes %>
-  </div>
-  <%= link_to user_question_path(@current_user, question) do %>
-    <div class="question">
-      <h3><strong>Q:</strong> <%= question.title %></h3>
-      <% end %>
+  <% unless question.abusive? %>
+    <div class="question-container" data-class="question-container" data-user-related-question="<%= @related_question_ids.include?(question.id) %>" data-user-following-posted-question="<%= @user_following_ids.include?(question.base_user_id) %>">
+    <div class='votes'>
+      <%= question.netvotes %>
     </div>
-    <div class="question-content">
-      <h4><%= question.content %></h4>
+    <%= link_to user_question_path(@current_user, question) do %>
+      <div class="question">
+        <h3><strong>Q:</strong> <%= question.title %></h3>
+        <% end %>
+      </div>
+      <div class="question-content">
+        <h4><%= question.content[0..40].concat('...') %></h4>
+      </div>
+      <br>
     </div>
-    <br>
-  </div>
+  <% end %>
 <% end %>

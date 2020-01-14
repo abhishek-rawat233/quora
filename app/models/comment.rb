@@ -1,5 +1,6 @@
 class Comment < ApplicationRecord
   include VoteConcern
+  include MarkAbusive
 
   ###VALIDATIONS###
   validates :content, presence: true

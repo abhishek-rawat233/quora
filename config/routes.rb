@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     post 'get_credits' => :create
   end
 
+  resources :report_abuses, only: :create
+
   controller :sessions do
     get 'login' => :new
     post 'login' => :login
