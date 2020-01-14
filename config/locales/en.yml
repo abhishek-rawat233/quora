@@ -37,6 +37,8 @@ en:
       logout: 'Please login again'
     redirect_current_user:
       already_registered: 'User is already signed in.'
+    redirect_disabled_user:
+      user_disabled: 'User account was disabled by admin. Please contact help'
     redirect_invalid_user:
       contact_help: 'Enter correct url or contact XXXXXXXXXXX if issue persists.'
   notification:

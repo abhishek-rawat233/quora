@@ -1,4 +1,6 @@
 class BaseUser < ApplicationRecord
+  enum question_type: [:active, :disabled]
+
   include TokenableConcern
   has_secure_password
 
