@@ -1,7 +1,9 @@
 <%= javascript_pack_tag 'question_filter' %>
 
 <%= link_to 'ask question', new_user_question_path(@current_user) -%> |
-<%= link_to 'user questions', user_questions_path(@current_user) -%>
+<%= link_to 'user questions', user_questions_path(@current_user) -%> |
+<%= link_to 'topics', topics_path -%> |
+<%= link_to 'user_feeds', users_path %>
 
 <%= label_tag :question_filter, 'filter' -%>
 <%= select_tag :question_filter, options_for_select(['All quesitons', 'related questions', 'posted by followings'], 'related questions'), {class: 'question_filter', "data-class": 'question-filter'} %>

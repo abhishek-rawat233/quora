@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_14_050151) do
+ActiveRecord::Schema.define(version: 2020_01_14_110101) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -44,6 +44,16 @@ ActiveRecord::Schema.define(version: 2020_01_14_050151) do
     t.boolean "abusive", default: false
     t.index ["base_user_id"], name: "index_answers_on_base_user_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
+  create_table "api_registers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "base_user_id"
+    t.integer "api_type", null: false
+    t.string "url", null: false
+    t.string "ip_address"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["base_user_id"], name: "index_api_registers_on_base_user_id"
   end
 
   create_table "base_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -146,6 +156,7 @@ ActiveRecord::Schema.define(version: 2020_01_14_050151) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "base_users"
   add_foreign_key "answers", "questions"
+  add_foreign_key "api_registers", "base_users"
   add_foreign_key "comments", "base_users"
   add_foreign_key "notifications", "base_users"
   add_foreign_key "notifications", "questions"

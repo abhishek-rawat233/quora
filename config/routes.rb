@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     get :verification
   end
 
-  resources :users, only: [:update , :edit ,:show] do
+  resources :users, only: [:update , :edit ,:show, :index] do
     get 'profile', to: 'users#show_profile'
     get 'home', to: :home
     resources :follows, only: [:update, :destroy]
@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   end
 
   resources :report_abuses, only: :create
+
+  resources :topics, only: [:index, :show]
 
   controller :sessions do
     get 'login' => :new
