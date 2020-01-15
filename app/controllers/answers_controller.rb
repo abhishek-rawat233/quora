@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+  before_action :redirect_nil_question
   before_action :set_answer, only: :create
 
   def new
@@ -11,14 +12,17 @@ class AnswersController < ApplicationController
     else
       flash[:notice] = @answer.errors
     end
-    redirect_to user_question_path(@current_user, params[:question])
   end
 
   def set_answer
-    options = { question_id: Question.find_by(url_slug: params[:question]).id,
+    options = { question_id: @question.id,
                 content: params[:user_answer],
                 base_user_id: @current_user.id}
     @answer = Answer.new(options)
-    redirect_to user_home_path, notice: 'no_such_question' if @answer.nil?
+  end
+
+  def redirect_nil_question
+    @question = Question.find_by(url_slug: params[:question])
+    redirect_to user_question_path(@current_user, params[:question]) if @question.nil?
   end
 end

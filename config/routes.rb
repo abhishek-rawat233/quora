@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   controller :sessions do
     get 'login' => :new
     post 'login' => :login
-    delete 'logout' => :destroy
+    delete 'logout' => :logout
     root 'sessions#welcome'
     get 'forgotPassword' => :forgot_password_form
     post 'forgotPassword' => :forgot_password

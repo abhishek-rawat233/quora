@@ -22,8 +22,9 @@ class UsersController < ApplicationController
   end
 
   def mark_all_as_seen
-    @unseen_notifications.map(&:set_status_as_seen)
+    @unseen_notifications.update_all(status: :seen)
     @unseen_notifications = Notification.none
+    render json
   end
 
   def show_profile

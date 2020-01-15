@@ -17,9 +17,9 @@
 <% @questions.each do |question| %>
   <% unless question.abusive? %>
     <div class="question-container" data-class="question-container" data-user-related-question="<%= @related_question_ids.include?(question.id) %>" data-user-following-posted-question="<%= @user_following_ids.include?(question.base_user_id) %>" data-title="<%= question.title %>">
-    <div class='votes'>
-      <%= question.netvotes %>
-    </div>
+      <div class='votes'>
+        <%= question.netvotes %>
+      </div>
     <%= link_to user_question_path(@current_user, question) do %>
       <div class="question">
         <h3><strong>Q:</strong> <%= question.title %></h3>

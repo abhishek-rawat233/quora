@@ -6,13 +6,21 @@ class VotesController < ApplicationController
   end
 
   def update
-    if @vote.update(vote_type: params[:vote_type])
+    if @vote.update(vote_type: get_vote_type)
       render json: { netvotes: @vote.voteable.netvotes }
     end
   end
 
   def get_vote
-    @vote = Vote.find_by(vote_params) || Vote.new(vote_params)
+    @vote = Vote.find_or_initialize_by(vote_params)
+  end
+
+  def get_vote_type
+    if @vote.vote_type == params[:vote_type]
+      'novote'
+    else
+      params[:vote_type]
+    end
   end
 
   def vote_params
