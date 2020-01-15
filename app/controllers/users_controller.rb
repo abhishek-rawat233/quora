@@ -38,6 +38,7 @@ class UsersController < ApplicationController
   end
 
   def index
+    ApiRegister.create(set_api_params)
     @user = BaseUser.eager_load(:questions).find_by(id: @current_user.id)
     render json: @user, only: [:id, :name], include: {
       questions: {
@@ -56,6 +57,14 @@ class UsersController < ApplicationController
          }
         }
       }
+    }
+  end
+
+  def set_api_params
+    {
+      api_type: :private_api,
+      url: request.path,
+      ip_address: request.remote_ip
     }
   end
 end

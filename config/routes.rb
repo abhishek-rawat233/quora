@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     get :verification
   end
 
+  resources :credit_shops, only: [:new, :create]
+
   resources :users, only: [:update , :edit ,:show, :index] do
     get 'profile', to: 'users#show_profile'
     get 'home', to: :home
@@ -28,10 +30,10 @@ Rails.application.routes.draw do
 
   resources :notifications, only: [:update]
 
-  controller :purchase_credits do
-    get 'offers' => :new
-    post 'get_credits' => :create
-  end
+  # controller :purchase_credits do
+  #   get 'offers' => :new
+  #   post 'get_credits' => :create
+  # end
 
   resources :report_abuses, only: :create
 

@@ -8,15 +8,15 @@ class QuestionFilter {
 
   loadQuestions = (e) => {
     this.target = $(e.currentTarget);
-    switch (this.target.val()) {
-      case 'related questions': this.allQuestions.hide();
-                                this.userRelatedQuestion.show();
-                                break;
-      case 'All questions': this.allQuestions.show();
-                            break;
-      case 'posted by followings': this.allQuestions.hide();
-                                   this.followingPostedQuestion.show();
-                                   break;
+    switch(this.target.val()) {
+      case 1: this.allQuestions.hide();
+              this.userRelatedQuestion.show();
+              break;
+      case 2: this.allQuestions.show();
+              break;
+      case 3: this.allQuestions.hide();
+              this.followingPostedQuestion.show();
+              break;
       default: this.allQuestions.show();
     }
   }
