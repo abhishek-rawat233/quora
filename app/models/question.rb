@@ -16,14 +16,84 @@ class Question < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :restrict_with_exception
   has_many :votes, as: :voteable, dependent: :restrict_with_exception
   ###CALLBACKS###
-   before_save :check_title_uniqueness
+   # before_save :check_title_uniqueness
    before_save :add_url_slug
-   after_create :set_question_notifications
-   after_create :send_notifications
+   # after_create :set_question_notifications
+   # after_create :send_notifications
 
-  ###VALIDATION###
-  validate :check_user_credits, if: :published?
-  validates :title, :content, presence: { scope: :published }
+
+    before_validation :a
+    after_validation :ab
+    before_save :ac
+    around_save :ad
+    before_create :ar
+    around_create :ae
+    after_create :af
+    before_update :ag
+    around_update :ah
+    after_update :ai
+    after_save :aj
+    after_commit :aq
+    before_destroy :am
+    around_destroy :an
+    after_destroy :ao
+    after_rollback :ap
+
+    ###VALIDATION###
+    validate :check_user_credits, if: :published?
+    validates :title, :content, presence: { scope: :published }
+
+    def a
+      p 'before_validation'
+    end
+    def ab
+      p 'after_validation'
+    end
+    def ac
+      p 'before_save'
+    end
+    def ad
+      p 'around_save'
+    end
+    def aj
+      p 'after_save'
+    end
+    def ar
+      p 'before_create'
+    end
+    def ae
+      p 'around_create'
+    end
+    def af
+      p 'after_create'
+    end
+    def ag
+      p 'before_update'
+    end
+    def ah
+      p 'around_update'
+    end
+    def ai
+      p 'after_update'
+    end
+    def aj
+      p 'after_save'
+    end
+    def aq
+      p 'after_commit'
+    end
+    def am
+      p 'before_destroy'
+    end
+    def an
+      p 'around_destroy'
+    end
+    def ao
+      p 'after_destroy'
+    end
+    def ap
+      p 'after_rollback'
+    end
 
 
   def check_user_credits
