@@ -12,38 +12,69 @@ class Question < ApplicationRecord
   has_many :related_users, -> { distinct }, through: :topics, source: 'users'
   has_many :notifications, dependent: :destroy
 
-  has_many :answers, dependent: :restrict_with_exception
+  has_many :answers, dependent: :restrict_with_error
   has_many :comments, as: :commentable, dependent: :restrict_with_exception
   has_many :votes, as: :voteable, dependent: :restrict_with_exception
   ###CALLBACKS###
-   # before_save :check_title_uniqueness
-   before_save :add_url_slug
-   # after_create :set_question_notifications
-   # after_create :send_notifications
+  #  # before_save :check_title_uniqueness
+  #  before_save :add_url_slug
+  #  # after_create :set_question_notifications
+  #  after_create :send_notifications
 
 
-    before_validation :a
-    after_validation :ab
-    before_save :ac
-    around_save :ad
-    before_create :ar
-    around_create :ae
-    after_create :af
-    before_update :ag
-    around_update :ah
-    after_update :ai
-    after_save :aj
-    after_commit :aq
-    before_destroy :am
-    around_destroy :an
-    after_destroy :ao
-    after_rollback :ap
+    # before_validation :_asd
+    # after_validation :ab
+    # before_save :ac
+    # around_save :ad
+    # before_create :ar
+    # around_create :ae
+    # after_create :af
+    # before_update :ag
+    # around_update :ah
+    # after_update :ai
+    # after_save :aj
+    # after_commit :aq
+    # before_destroy :am
+    # around_destroy :an
+    # after_destroy :ao
+    # after_rollback :ap
+    before_save :anyy
+    before_save :asd
+    after_create :first
+    around_save :check
+    after_save :third
+    after_create :second
 
     ###VALIDATION###
-    validate :check_user_credits, if: :published?
-    validates :title, :content, presence: { scope: :published }
+    # validate :check_user_credits, if: :published?
+    # validates :title, :content, presence: { scope: :published }
 
-    def a
+    def check
+      p 10
+      yield
+      p 11
+    end
+
+    def anyy
+      p 1
+    end
+
+    def asd
+      p 2
+    end
+
+    def first
+      p 3
+    end
+
+    def second
+      p 4
+    end
+
+    def third
+      p 5
+    end
+    def _asd
       p 'before_validation'
     end
     def ab
