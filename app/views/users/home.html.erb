@@ -5,7 +5,7 @@
 <%= link_to 'user questions', user_questions_path(@current_user) -%> |
 <%= link_to 'topics', topics_path -%> |
 <%= link_to 'user_feeds', users_path -%> |
-<%= link_to 'purchase credits', new_credit_shop_path %>
+<%= link_to 'credits', user_credits_path -%> |
 <%= label_tag :question_filter, 'filter' -%>
 <%= select_tag :question_filter, options_for_select([['All quesitons', 1], ['related questions', 2], ['posted by followings', 3]], 2), {class: 'question_filter', "data-class": 'question-filter'} %>
 
@@ -17,6 +17,8 @@
 <h2>Question Factory</h2>
 <div data-class= "question-store">
   <% @questions.each do |question| %>
+  <% @answers = question.answers %>
+  <%= render @answers %>
     <% unless question.abusive? %>
       <div class="question-container" data-class="question-container" data-user-related-question="<%= @related_question_ids.include?(question.id) %>" data-user-following-posted-question="<%= @user_following_ids.include?(question.base_user_id) %>" data-title="<%= question.title.downcase %>">
         <div class='votes'>

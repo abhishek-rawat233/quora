@@ -9,6 +9,7 @@ class BaseUser < ApplicationRecord
   before_save :set_credits, if: [:verified_changed?, :verified?]
   after_create :set_verification_token
   after_create :send_verification_mail
+  after_create_commit :assign_customer_id
 
   ####association####
   has_one_attached :image
@@ -92,6 +93,11 @@ class BaseUser < ApplicationRecord
 
   def send_answer_notification_mail(sender, question_slug)
     BaseUserMailer.answer_notification(self, sender, question_slug).deliver_later
+  end
+
+  def assign_customer_id
+    customer = Stripe::Customer.create(email: email)
+    self.customer_id = customer.id
   end
 
   private

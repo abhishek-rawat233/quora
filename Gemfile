@@ -26,7 +26,9 @@ gem 'redis', '~> 4.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 #stripe checkout gem
-gem 'stripe', '>=5.13.0'
+gem 'stripe', '>=5.14.0'
+#stripe-event
+gem 'stripe_event', '>=2.3.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -54,6 +56,7 @@ group :development do
 end
 
 group :test do
+  gem 'stripe-ruby-mock'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'

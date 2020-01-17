@@ -37,6 +37,19 @@ class UsersController < ApplicationController
     @related_question_ids = @current_user.related_question_ids
   end
 
+  def credits
+    @credits = @current_user.credits
+  end
+
+  def transaction_history
+    @transactions = Stripe::Charge.list {customer:@current_user.customer_id}
+    # render json: @transactions
+  end
+
+  def purchase_credits
+    redirect_to new_charge_path( offer: params[:offer_code] )
+  end
+
   def index
     ApiRegister.create(set_api_params)
     @user = BaseUser.eager_load(:questions).find_by(id: @current_user.id)

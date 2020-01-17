@@ -7,11 +7,14 @@ Rails.application.routes.draw do
     get :verification
   end
 
-  resources :credit_shops, only: [:new, :create]
+  resources :charges, only: [:new, :create]
 
   resources :users, only: [:update , :edit ,:show, :index] do
     get 'profile', to: 'users#show_profile'
     get 'home', to: :home
+    get 'credits', to: :credits
+    post 'purchase_credits', to: :purchase_credits
+    get :transaction_history
     resources :follows, only: [:update, :destroy]
     resources :questions
     member do
@@ -50,5 +53,6 @@ Rails.application.routes.draw do
     post 'resetPassword' => :reset_password
   end
 
+  mount StripeEvent::Engine, at: '/payments'
   # get '*path', to: redirect('/')
 end

@@ -1,5 +1,7 @@
 <%# <%= render 'payment' %> %>
-<%= javascript_include_tag "https://js.stripe.com/v3/" %>
+<%# <%= javascript_include_tag "https://js.stripe.com/v3/" %> %>
+<%= stripe_javascript_tag %>
+
 
 <%= javascript_pack_tag 'client' %>
 
@@ -54,6 +56,7 @@
 </div> <!-- tab-pane.// -->
 <div class="tab-pane fade" id="nav-tab-paypal">
 <p>Paypal is easiest way to pay online</p>
+
 <p>
 <button type="button" class="btn btn-primary"> <i class="fab fa-paypal"></i> Log in my Paypal </button>
 </p>

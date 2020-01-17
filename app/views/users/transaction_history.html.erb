@@ -1,0 +1,7 @@
+<% @transactions.each_with_index do |transaction, index| %>
+  <ul><h4><strong>Transaction <%= index + 1 %> </strong></h4>
+    <li><h5>Name: <%= transaction[:billing_details][:name] %></h5></li>
+    <li><h5>Amount: <%= transaction[:currency] %> <%= transaction[:amount]/100%></h5></li>
+    <li><h5>Transaction: <%= transaction[:paid] ?  "success" : "failure" %></h5></li>
+  </ul>
+<% end %>
