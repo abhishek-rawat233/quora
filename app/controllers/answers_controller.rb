@@ -23,6 +23,6 @@ class AnswersController < ApplicationController
 
   def redirect_nil_question
     @question = Question.find_by(url_slug: params[:question])
-    redirect_to user_question_path(@current_user, params[:question]) if @question.nil?
+    redirect_to user_question_path(@current_user, params[:question]), notice: 'no such questions' if @question.nil?
   end
 end

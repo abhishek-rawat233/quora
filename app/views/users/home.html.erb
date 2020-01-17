@@ -17,8 +17,6 @@
 <h2>Question Factory</h2>
 <div data-class= "question-store">
   <% @questions.each do |question| %>
-  <% @answers = question.answers %>
-  <%= render @answers %>
     <% unless question.abusive? %>
       <div class="question-container" data-class="question-container" data-user-related-question="<%= @related_question_ids.include?(question.id) %>" data-user-following-posted-question="<%= @user_following_ids.include?(question.base_user_id) %>" data-title="<%= question.title.downcase %>">
         <div class='votes'>

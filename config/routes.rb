@@ -33,11 +33,6 @@ Rails.application.routes.draw do
 
   resources :notifications, only: [:update]
 
-  # controller :purchase_credits do
-  #   get 'offers' => :new
-  #   post 'get_credits' => :create
-  # end
-
   resources :report_abuses, only: :create
 
   resources :topics, only: [:index, :show]
