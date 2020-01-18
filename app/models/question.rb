@@ -126,6 +126,8 @@ class Question < ApplicationRecord
       p 'after_rollback'
     end
 
+  def acts_like_answer?
+  end
 
   def check_user_credits
     unless author.credits > 0
