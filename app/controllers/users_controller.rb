@@ -42,7 +42,7 @@ class UsersController < ApplicationController
   end
 
   def transaction_history
-    @transactions = Stripe::Charge.list {customer: @current_user.customer_id}
+    @transactions = Stripe::Charge.list {customer:@current_user.customer_id}
   end
 
   def purchase_credits

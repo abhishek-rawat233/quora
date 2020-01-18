@@ -64,7 +64,7 @@ end
 
   def redirect_current_user
     if @current_user.present?
-      redirect_to user_home_path, notice: t('application.redirect_current_user.already_registered')
+      redirect_to user_home_path(@current_user), notice: t('application.redirect_current_user.already_registered')
     end
   end
 

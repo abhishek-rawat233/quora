@@ -56,7 +56,7 @@ group :development do
 end
 
 group :test do
-  gem 'stripe-ruby-mock', '>3.0.0'
+  gem 'stripe-ruby-mock', '>=3.0.0'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
