@@ -12,16 +12,16 @@ class Question < ApplicationRecord
   has_many :related_users, -> { distinct }, through: :topics, source: 'users'
   has_many :notifications, dependent: :destroy
 
-  has_many :answers, dependent: :restrict_with_exception
-  has_many :comments, as: :commentable, dependent: :restrict_with_exception
-  has_many :votes, as: :voteable, dependent: :restrict_with_exception
+  has_many :answers, dependent: :restrict_with_error
+  has_many :comments, as: :commentable, dependent: :restrict_with_error
+  has_many :votes, as: :voteable, dependent: :restrict_with_error
   ###CALLBACKS###
-   before_save :check_title_uniqueness
    before_save :add_url_slug
-   after_create :set_question_notifications
-   after_create :send_notifications
+   after_save :set_question_notifications, if: :published? && :saved_change_to_question_type?
+   after_save :send_notifications, if: :published? && :saved_change_to_question_type?
 
   ###VALIDATION###
+  validate :check_title_uniqueness
   validate :check_user_credits, if: :published?
   validates :title, :content, presence: { scope: :published }
 
@@ -53,15 +53,13 @@ class Question < ApplicationRecord
   end
 
   def set_question_notifications
-    related_user_ids.deifference(base_user_id).each do |id|
+    related_user_ids.difference(base_user_id).each do |id|
       notifications.create(base_user_id: id)
     end
   end
 
   def send_notifications
-    if published?
       ActionCable.server.broadcast 'notification_channel', content: self, notified_users: related_user_ids.difference([id])
-    end
   end
 
   def mark_as_abusive

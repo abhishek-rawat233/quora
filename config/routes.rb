@@ -7,9 +7,14 @@ Rails.application.routes.draw do
     get :verification
   end
 
+  resources :charges, only: [:new, :create]
+
   resources :users, only: [:update , :edit ,:show, :index] do
     get 'profile', to: 'users#show_profile'
     get 'home', to: :home
+    get 'credits', to: :credits
+    post 'purchase_credits', to: :purchase_credits
+    get :transaction_history
     resources :follows, only: [:update, :destroy]
     resources :questions
     member do
@@ -28,11 +33,6 @@ Rails.application.routes.draw do
 
   resources :notifications, only: [:update]
 
-  controller :purchase_credits do
-    get 'offers' => :new
-    post 'get_credits' => :create
-  end
-
   resources :report_abuses, only: :create
 
   resources :topics, only: [:index, :show]
@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   controller :sessions do
     get 'login' => :new
     post 'login' => :login
-    delete 'logout' => :destroy
+    delete 'logout' => :logout
     root 'sessions#welcome'
     get 'forgotPassword' => :forgot_password_form
     post 'forgotPassword' => :forgot_password
@@ -48,5 +48,6 @@ Rails.application.routes.draw do
     post 'resetPassword' => :reset_password
   end
 
+  mount StripeEvent::Engine, at: '/payments'
   # get '*path', to: redirect('/')
 end

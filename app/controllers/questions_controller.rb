@@ -59,7 +59,7 @@ class QuestionsController < ApplicationController
   end
 
   def set_question
-    @question = Question.eager_load(:answers).find_by(url_slug: params[:id])
+    @question = Question.includes(:answers).find_by(url_slug: params[:id])
     redirect_nil_question
   end
 

@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :set_current_user
   before_action :redirect_guest_users
+  before_action :redirect_disabled_user
   before_action :set_notifications
   before_action :set_locale
 
@@ -63,7 +64,14 @@ end
 
   def redirect_current_user
     if @current_user.present?
-      redirect_to user_home_path, notice: t('application.redirect_current_user.already_registered')
+      redirect_to user_home_path(@current_user), notice: t('application.redirect_current_user.already_registered')
+    end
+  end
+
+  def redirect_disabled_user
+    if @current_user.disabled?
+      flash[:notice] = t('application.redirect_disabled_user.user_disabled')
+      logout
     end
   end
 

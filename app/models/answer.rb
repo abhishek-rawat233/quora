@@ -2,9 +2,8 @@ class Answer < ApplicationRecord
   include VoteConcern
 
   ###CALLBACKS###
-  before_save :update_credits
+  before_save :update_credits, if: :netvotes_changed?
   after_create :send_notification_mail
-  # after_update :revert_abusive_answer_credits
 
   ###ASSOCIATION###
   belongs_to :question
@@ -18,10 +17,10 @@ class Answer < ApplicationRecord
   def update_credits
     unless abusive?
       if netvotes < UPVOTE_CHECK_COUNT && point_credited
-        base_user.decrement_credits
+        base_user.decrement!(:credits)
         update(point_credited: false)
-      elsif netvotes > UPVOTE_CHECK_COUNT && !point_credited
-        base_user.increment_credits
+      elsif netvotes >= UPVOTE_CHECK_COUNT && !point_credited
+        base_user.increment!(:credits)
         update(point_credited: true)
       end
     end
@@ -34,7 +33,7 @@ class Answer < ApplicationRecord
   def mark_as_abusive
     super
     if point_credited
-      base_user.decrement_credits
+      base_user.decrement!(:credits)
     end
   end
 

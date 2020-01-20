@@ -6,18 +6,10 @@ class Vote < ApplicationRecord
   belongs_to :base_user
 
   ###CALLBACKS###
-  around_update :set_votes
-  after_save :change_netvotes 
+  after_save :change_netvotes, if: :saved_change_to_vote_type?
 
   ###VALIDATIONS###
   validates :base_user_id, uniqueness: { scope: :voteable}
-
-  def set_votes
-    unless vote_type_changed?
-      self.vote_type = 'novote'
-    end
-    yield
-  end
 
   def change_netvotes
     voteable.update_netvotes

@@ -22,8 +22,9 @@ class UsersController < ApplicationController
   end
 
   def mark_all_as_seen
-    @unseen_notifications.map(&:set_status_as_seen)
+    @unseen_notifications.update_all(status: :seen)
     @unseen_notifications = Notification.none
+    render json
   end
 
   def show_profile
@@ -36,7 +37,20 @@ class UsersController < ApplicationController
     @related_question_ids = @current_user.related_question_ids
   end
 
+  def credits
+    @credits = @current_user.credits
+  end
+
+  def transaction_history
+    @transactions = Stripe::Charge.list {customer:@current_user.customer_id}
+  end
+
+  def purchase_credits
+    redirect_to new_charge_path( offer: params[:offer_code] )
+  end
+
   def index
+    ApiRegister.create(set_api_params)
     @user = BaseUser.eager_load(:questions).find_by(id: @current_user.id)
     render json: @user, only: [:id, :name], include: {
       questions: {
@@ -55,6 +69,14 @@ class UsersController < ApplicationController
          }
         }
       }
+    }
+  end
+
+  def set_api_params
+    {
+      api_type: :private_api,
+      url: request.path,
+      ip_address: request.remote_ip
     }
   end
 end

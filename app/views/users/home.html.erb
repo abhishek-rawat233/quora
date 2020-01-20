@@ -1,29 +1,37 @@
 <%= javascript_pack_tag 'question_filter' %>
+<%= javascript_pack_tag 'question_search' %>
 
 <%= link_to 'ask question', new_user_question_path(@current_user) -%> |
 <%= link_to 'user questions', user_questions_path(@current_user) -%> |
 <%= link_to 'topics', topics_path -%> |
-<%= link_to 'user_feeds', users_path %>
-
+<%= link_to 'user_feeds', users_path -%> |
+<%= link_to 'credits', user_credits_path -%> |
 <%= label_tag :question_filter, 'filter' -%>
-<%= select_tag :question_filter, options_for_select(['All quesitons', 'related questions', 'posted by followings'], 'related questions'), {class: 'question_filter', "data-class": 'question-filter'} %>
+<%= select_tag :question_filter, options_for_select([['All quesitons', 1], ['related questions', 2], ['posted by followings', 3]], 2), {class: 'question_filter', "data-class": 'question-filter'} %>
+
+<form class="form-inline my-2 my-lg-0">
+  <input class="form-control mr-sm-2" type="text" placeholder="Search" data-id="question-searchbox">
+</form>
+
 
 <h2>Question Factory</h2>
-<% @questions.each do |question| %>
-  <% unless question.abusive? %>
-    <div class="question-container" data-class="question-container" data-user-related-question="<%= @related_question_ids.include?(question.id) %>" data-user-following-posted-question="<%= @user_following_ids.include?(question.base_user_id) %>">
-    <div class='votes'>
-      <%= question.netvotes %>
-    </div>
-    <%= link_to user_question_path(@current_user, question) do %>
-      <div class="question">
-        <h3><strong>Q:</strong> <%= question.title %></h3>
-        <% end %>
+<div data-class= "question-store">
+  <% @questions.each do |question| %>
+    <% unless question.abusive? %>
+      <div class="question-container" data-class="question-container" data-user-related-question="<%= @related_question_ids.include?(question.id) %>" data-user-following-posted-question="<%= @user_following_ids.include?(question.base_user_id) %>" data-title="<%= question.title.downcase %>">
+        <div class='votes'>
+          <%= question.netvotes %>
+        </div>
+      <%= link_to user_question_path(@current_user, question) do %>
+        <div class="question">
+          <h3><strong>Q:</strong> <%= question.title %></h3>
+          <% end %>
+        </div>
+        <div class="question-content">
+          <h4><%= question.content[0..40].concat('...') %></h4>
+        </div>
+        <br>
       </div>
-      <div class="question-content">
-        <h4><%= question.content[0..40].concat('...') %></h4>
-      </div>
-      <br>
-    </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>

@@ -7,6 +7,7 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'mark_all_as_seen'  if @current_user.present? %>
   </head>
 
   <body>
@@ -31,7 +32,7 @@
           <% notifications_present = !@unseen_notifications.length.zero? %>
         <span id = "notifications-counter" data-user-id="<%= @current_user.id %>" ><%= @unseen_notifications.length if notifications_present %></span></a>
         <div class="dropdown-menu dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-555">
-          <%= link_to 'mark all as seen', mark_all_as_seen_user_path(@current_user), method: :patch, remote: true, id: "status_changing_link", style: "#{'display: none' unless notifications_present}" %>
+          <%= link_to 'mark all as seen', '', remote: true, id: "status_changing_link", style: "#{'display: none' unless notifications_present}", "data-mark-all-notification-path": mark_all_as_seen_user_path(@current_user)  %>
           <div id="notifications-container">
             <%= 'No Notifications' unless notifications_present %>
             <% @unseen_notifications.each do |notification| %>

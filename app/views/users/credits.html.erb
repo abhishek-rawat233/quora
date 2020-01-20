@@ -1,0 +1,19 @@
+<h3>User Credits: <%= @credits %></h3>
+
+<h3><%= link_to 'TRANSACTION HISTORY', user_transaction_history_path(@current_user) %> </h3>
+
+<%= form_with url: user_purchase_credits_path do |form| %>
+<div class='offer'>
+  <%= form.hidden_field :offer_code, value: 'first' %>
+  <h1>Get 5 credits of $10</h1>
+  <h2><%= form.submit 'buy credits' %></h2>
+</div>
+<% end %>
+
+<%= form_with url: user_purchase_credits_path do |form| %>
+  <div class='offer'>
+    <%= form.hidden_field :offer_code, value: 'second' %>
+    <h1>Get 10 credits of $9</h1>
+    <h2><%= form.submit 'buy credits' %></h2>
+  </div>
+<% end %>

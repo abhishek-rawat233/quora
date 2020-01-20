@@ -20,8 +20,7 @@ class SessionsController < ApplicationController
     redirect_to login_url, notice: t('.unverified') unless @user.verified
   end
 
-  #for logout
-  def destroy
+  def logout
     flash[:notice] = t('application.logout.logout')
     logout
   end

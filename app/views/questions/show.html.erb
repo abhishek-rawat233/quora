@@ -19,7 +19,7 @@
       <%= render 'vote_form', voteType: 'Comment', voteId: comment.id, base_model: comment %>
     </div>
     <%= comment.content -%>
-    <%= render 'mark_abusive', abusable_id: comment.id, abusable_type: 'Comment' %>
+    <%= render 'mark_abusive', abusable_id: comment.id, abusable_type: 'Comment' -%>
     <%= render 'posted_by', writer: comment.base_user -%>
     <% end %>
   <% end %>
@@ -36,6 +36,7 @@
     <%= form.submit value: "submit answer" %>
   </div>
 <% end %>
+
 
 <% if @answers.present? %>
   <% @answers.each do |answer| %>
