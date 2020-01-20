@@ -1,4 +1,5 @@
 class Question < ApplicationRecord
+
   include VoteConcern
 
   enum question_type: [:drafted, :published, :abusive]
@@ -48,6 +49,8 @@ class Question < ApplicationRecord
     ###VALIDATION###
     # validate :check_user_credits, if: :published?
     # validates :title, :content, presence: { scope: :published }
+
+  alias_attribute :desc, :content
 
     def check
       p 10
