@@ -18,6 +18,10 @@ class BaseUser < ApplicationRecord
   has_many :questions, dependent: :destroy
   has_many :notifications,dependent: :destroy
   has_many :report_abuses, dependent: :destroy
+  has_many :comments
+  has_many :answers
+  has_many :answered_q, ->{distinct}, through: :answers, source: 'question'
+  has_many :commented_q, ->{distinct}, through: :comments, source: 'commentable', source_type: 'Question'
 
   has_many :follows
 
@@ -33,6 +37,10 @@ class BaseUser < ApplicationRecord
                                               message: "invalid. Please enter valid mail id." }
   validates :password_digest, presence: true, confirmation: true, on: :create
   validates :password_confirmation, presence: true, on: [:create, :password_digest_changed?]
+
+  def self_ans_q
+    question_ids & commented_q_ids
+  end
 
   def unseen_notifications
     notifications.unseen

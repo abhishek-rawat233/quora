@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+
   before_action :set_answer, only: :create
 
   def new

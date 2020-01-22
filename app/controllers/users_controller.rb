@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+
   #update profile
   def update
     if params.keys.include?("user")

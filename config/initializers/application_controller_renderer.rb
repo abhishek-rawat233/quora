@@ -6,3 +6,4 @@
 #     https: false
 #   )
 # end
+p 'ApplicationController.renderer'

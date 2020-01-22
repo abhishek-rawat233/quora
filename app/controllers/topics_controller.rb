@@ -1,4 +1,5 @@
 class TopicsController < ApplicationController
+  # wrap_parameters exclude: [:name]
   before_action :check_api_calls, only: :show
   after_action :set_api_call_record, only: :show
 

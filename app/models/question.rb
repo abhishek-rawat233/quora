@@ -4,6 +4,7 @@ class Question < ApplicationRecord
 
   enum question_type: [:drafted, :published, :abusive]
   ###ASSOCIATION###
+  belongs_to :base_user
   belongs_to :author, class_name: 'BaseUser', foreign_key: :base_user_id
 
   has_many_attached :pdfs
@@ -17,10 +18,10 @@ class Question < ApplicationRecord
   has_many :comments, as: :commentable, dependent: :restrict_with_exception
   has_many :votes, as: :voteable, dependent: :restrict_with_exception
   ###CALLBACKS###
-  #  # before_save :check_title_uniqueness
-  #  before_save :add_url_slug
-  #  # after_create :set_question_notifications
-  #  after_create :send_notifications
+   before_save :check_title_uniqueness
+   before_save :add_url_slug
+   after_create :set_question_notifications
+   after_create :send_notifications
 
 
     # before_validation :_asd
@@ -39,12 +40,12 @@ class Question < ApplicationRecord
     # around_destroy :an
     # after_destroy :ao
     # after_rollback :ap
-    before_save :anyy
-    before_save :asd
-    after_create :first
-    around_save :check
-    after_save :third
-    after_create :second
+    # before_save :anyy
+    # before_save :asd
+    # after_create :first
+    # around_save :check
+    # after_save :third
+    # after_create :second
 
     ###VALIDATION###
     # validate :check_user_credits, if: :published?
@@ -52,82 +53,82 @@ class Question < ApplicationRecord
 
   alias_attribute :desc, :content
 
-    def check
-      p 10
-      yield
-      p 11
-    end
-
-    def anyy
-      p 1
-    end
-
-    def asd
-      p 2
-    end
-
-    def first
-      p 3
-    end
-
-    def second
-      p 4
-    end
-
-    def third
-      p 5
-    end
-    def _asd
-      p 'before_validation'
-    end
-    def ab
-      p 'after_validation'
-    end
-    def ac
-      p 'before_save'
-    end
-    def ad
-      p 'around_save'
-    end
-    def aj
-      p 'after_save'
-    end
-    def ar
-      p 'before_create'
-    end
-    def ae
-      p 'around_create'
-    end
-    def af
-      p 'after_create'
-    end
-    def ag
-      p 'before_update'
-    end
-    def ah
-      p 'around_update'
-    end
-    def ai
-      p 'after_update'
-    end
-    def aj
-      p 'after_save'
-    end
-    def aq
-      p 'after_commit'
-    end
-    def am
-      p 'before_destroy'
-    end
-    def an
-      p 'around_destroy'
-    end
-    def ao
-      p 'after_destroy'
-    end
-    def ap
-      p 'after_rollback'
-    end
+    # def check
+    #   p 10
+    #   yield
+    #   p 11
+    # end
+    #
+    # def anyy
+    #   p 1
+    # end
+    #
+    # def asd
+    #   p 2
+    # end
+    #
+    # def first
+    #   p 3
+    # end
+    #
+    # def second
+    #   p 4
+    # end
+    #
+    # def third
+    #   p 5
+    # end
+    # def _asd
+    #   p 'before_validation'
+    # end
+    # def ab
+    #   p 'after_validation'
+    # end
+    # def ac
+    #   p 'before_save'
+    # end
+    # def ad
+    #   p 'around_save'
+    # end
+    # def aj
+    #   p 'after_save'
+    # end
+    # def ar
+    #   p 'before_create'
+    # end
+    # def ae
+    #   p 'around_create'
+    # end
+    # def af
+    #   p 'after_create'
+    # end
+    # def ag
+    #   p 'before_update'
+    # end
+    # def ah
+    #   p 'around_update'
+    # end
+    # def ai
+    #   p 'after_update'
+    # end
+    # def aj
+    #   p 'after_save'
+    # end
+    # def aq
+    #   p 'after_commit'
+    # end
+    # def am
+    #   p 'before_destroy'
+    # end
+    # def an
+    #   p 'around_destroy'
+    # end
+    # def ao
+    #   p 'after_destroy'
+    # end
+    # def ap
+    #   p 'after_rollback'
+    # end
 
   def acts_like_answer?
   end

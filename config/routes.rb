@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
+
   controller :registration do
     get 'signup', to: 'registration#new'
     post 'signup', to: 'registration#create'
@@ -19,7 +20,8 @@ Rails.application.routes.draw do
 
   match '/update_votes' => 'votes#update', via: :get
 
-  resources :answers, only: [:new, :create]
+  # resources :answers, only: [:new, :create]
+  resources :answers
 
   controller :comments do
     get 'new_comment' => :new
@@ -46,6 +48,17 @@ Rails.application.routes.draw do
     post 'forgotPassword' => :forgot_password
     get 'resetPassword' => :reset_password_form
     post 'resetPassword' => :reset_password
+  end
+  direct :homepage do
+    "https://rubyonrails.org"
+  end
+
+  direct :commentable do |model|
+    [ model, anchor: model.dom_id ]
+  end
+
+  direct :main do
+    { controller: "pages", action: "index", subdomain: "www" }
   end
 
   # get '*path', to: redirect('/')
