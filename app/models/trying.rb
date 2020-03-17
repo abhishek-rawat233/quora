@@ -1,0 +1,2 @@
+class Trying < ApplicationRecord
+end

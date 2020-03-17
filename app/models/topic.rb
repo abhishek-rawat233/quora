@@ -3,6 +3,7 @@ class Topic < ApplicationRecord
   has_many :user_favorite_topics, dependent: :destroy
   has_many :users, through: :user_favorite_topics, source: :base_user
   has_many :questions_topics, dependent: :destroy
+  # has_and_belongs_to_many :questions
   has_many :questions, through: :questions_topics
 
   ###VALIDATION###

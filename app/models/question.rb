@@ -4,25 +4,54 @@ class Question < ApplicationRecord
 
   enum question_type: [:drafted, :published, :abusive]
   ###ASSOCIATION###
-  belongs_to :base_user
-  belongs_to :author, class_name: 'BaseUser', foreign_key: :base_user_id
+  belongs_to :base_user, inverse_of: :questions
+  belongs_to :author, class_name: 'BaseUser', foreign_key: :base_user_id, inverse_of: :questions
+
 
   has_many_attached :pdfs
 
   has_many :questions_topics, dependent: :destroy
+  has_and_belongs_to_many :topics
   has_many :topics, through: :questions_topics
   has_many :related_users, -> { distinct }, through: :topics, source: 'users'
-  has_many :notifications, dependent: :destroy
+  has_many :notifications, dependent: :destroy, inverse_of: :question
 
   has_many :answers, dependent: :restrict_with_error
   has_many :comments, as: :commentable, dependent: :restrict_with_exception
   has_many :votes, as: :voteable, dependent: :restrict_with_exception
   ###CALLBACKS###
+  after_initialize -> { p 'object initialized' }
    before_save :check_title_uniqueness
    before_save :add_url_slug
    after_create :set_question_notifications
    after_create :send_notifications
+   before_save :first
+   before_save :second
+   around_save :third
+   after_save :fourth
+   after_save :fifth
 
+  def first
+    p 'first'
+  end
+
+  def second
+    p 'second'
+  end
+
+  def third
+    p 'third before'
+    yield
+    p 'third after'
+  end
+
+  def fourth
+    p 'fourth'
+  end
+
+  def fifth
+    p 'fifth'
+  end
 
     # before_validation :_asd
     # after_validation :ab
@@ -130,8 +159,8 @@ class Question < ApplicationRecord
     #   p 'after_rollback'
     # end
 
-  def acts_like_answer?
-  end
+  # def acts_like_answer?
+  # end
 
   def check_user_credits
     unless author.credits > 0
@@ -160,7 +189,7 @@ class Question < ApplicationRecord
   end
 
   def set_question_notifications
-    related_user_ids.deifference(base_user_id).each do |id|
+    related_user_ids.difference(base_user_id).each do |id|
       notifications.create(base_user_id: id)
     end
   end

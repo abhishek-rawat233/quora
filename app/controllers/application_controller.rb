@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   def set_current_user
     @current_user ||= User.find_by(api_token: session[:api_token]) || get_api_stored_user
     @profile_image ||= @current_user.get_profile_image if @current_user.present?
-end
+  end
 
   def get_api_stored_user
     user ||= User.find_by(api_token: cookies.signed[:api_token])

@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_action :redirect_guest_users, except: :welcome
+  skip_before_action :redirect_disabled_user, only: [:new, :login]
   before_action :redirect_current_user, only: [:new, :login, :forgot_password, :forgot_password_form, :reset_password_form, :reset_password_form]
   before_action :get_user_by_email, only: [:forgot_password, :login]
   before_action :check_user_validity, only: :login

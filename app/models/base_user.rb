@@ -1,4 +1,8 @@
+require 'active_support'
+
 class BaseUser < ApplicationRecord
+  include ActiveSupport::Callbacks
+
   enum question_type: [:active, :disabled]
 
   include TokenableConcern
@@ -15,14 +19,20 @@ class BaseUser < ApplicationRecord
   has_many :user_favorite_topics, dependent: :destroy
   has_many :topics, through: :user_favorite_topics
   has_many :related_questions, -> { distinct }, through: :topics, source: 'questions'
-  has_many :questions, dependent: :destroy
+  has_many :questions, dependent: :destroy, inverse_of: :base_user
+  # has_one :question_counts do
+  #   questions.size
+  # end
   has_many :notifications,dependent: :destroy
   has_many :report_abuses, dependent: :destroy
   has_many :comments
   has_many :answers
   has_many :answered_q, ->{distinct}, through: :answers, source: 'question'
   has_many :commented_q, ->{distinct}, through: :comments, source: 'commentable', source_type: 'Question'
-
+   #has_many :self_ans_q, ->{ where("questions.id = ?", self.id)}, through: :answers, source: 'question'
+   # has_many :se`lf_ans_q, through: :answers, source: 'question'
+  has_many :self_ans_q, ->(user) { distinct.where(base_user_id: user.id) }, through: :answers, source: 'question'
+  # has_many :self_unans_q, ->(user) { where.not(answers.base_user_id: user.id)}, class_name: 'Question'
   has_many :follows
 
   has_many :follower_relationships, foreign_key: 'following_id', class_name: 'Follow'
@@ -38,9 +48,25 @@ class BaseUser < ApplicationRecord
   validates :password_digest, presence: true, confirmation: true, on: :create
   validates :password_confirmation, presence: true, on: [:create, :password_digest_changed?]
 
-  def self_ans_q
-    question_ids & commented_q_ids
+
+  def check_cust
+    p 'running'
   end
+
+  define_callbacks :cust_callb
+
+  def cust_callb
+    run_callbacks :cust_callb do
+      p 'custom callback'
+    end
+  end
+
+  set_callback :cust_callb, :after, :check_cust
+
+#  # def self_ans_q
+  #   question_ids & commented_q_ids
+  # end
+
 
   def unseen_notifications
     notifications.unseen

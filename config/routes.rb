@@ -18,6 +18,10 @@ Rails.application.routes.draw do
     end
   end
 
+  scope :v1 do
+    resources :questions, param: :identifier, path: :asks, as: :stories
+  end
+
   match '/update_votes' => 'votes#update', via: :get
 
   # resources :answers, only: [:new, :create]

@@ -16,6 +16,7 @@ default: &default
   username: <%= Rails.application.credentials.dig(:development, :mysql_username) %>
   password: <%= Rails.application.credentials.dig(:development, :mysql_password) %>
   socket: /var/run/mysqld/mysqld.sock
+  reconnect: true
 
 development:
   <<: *default

@@ -77,6 +77,7 @@ class Answer < ApplicationRecord
 
   ###ASSOCIATION###
   belongs_to :question
+  # belongs_to :ask
   belongs_to :base_user
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :votes, as: :voteable, dependent: :destroy

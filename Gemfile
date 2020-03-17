@@ -51,6 +51,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
+  gem 'factory_bot_rails'
+  gem 'rspec-rails', '~> 4.0.0.beta3'
 end
 
 group :test do
@@ -59,4 +61,9 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
+  gem 'factory_bot_rails'
+  gem 'rspec-rails', '~> 4.0.0.beta3'
+  gem 'rails-controller-testing'
+  gem 'shoulda-matchers', '~> 4.0', '>= 4.0'
+  gem "shoulda-callback-matchers", "~> 1.1.3"
 end
