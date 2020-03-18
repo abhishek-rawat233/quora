@@ -105,8 +105,10 @@ ActiveRecord::Schema.define(version: 2020_01_24_064328) do
     t.integer "question_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "base_user_id", null: false
     t.string "url_slug", null: false
     t.integer "netvotes", default: 0
+    t.index ["base_user_id"], name: "index_questions_on_base_user_id"
   end
 
   create_table "questions_topics", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|

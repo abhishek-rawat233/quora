@@ -52,6 +52,7 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'factory_bot_rails'
+  # gem 'rspec-rails', '~> 3.9.0'
   gem 'rspec-rails', '~> 4.0.0.beta3'
 end
 
@@ -62,6 +63,7 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
   gem 'factory_bot_rails'
+  # gem 'rspec-rails', '~> 3.9.0'
   gem 'rspec-rails', '~> 4.0.0.beta3'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers', '~> 4.0', '>= 4.0'

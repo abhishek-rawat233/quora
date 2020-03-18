@@ -3,7 +3,7 @@ require 'active_support'
 class BaseUser < ApplicationRecord
   include ActiveSupport::Callbacks
 
-  enum question_type: [:active, :disabled]
+  enum status: [:active, :disabled]
 
   include TokenableConcern
   has_secure_password
