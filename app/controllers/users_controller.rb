@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-
-  #update profile
   def update
     if params.keys.include?("user")
       @current_user.add_image(get_profile_image) unless params[:user][:profile_image].nil?

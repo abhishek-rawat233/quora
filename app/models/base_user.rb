@@ -78,7 +78,7 @@ class BaseUser < ApplicationRecord
   end
 
   def send_verification_mail
-    BaseUserMailer.verify(self).deliver_later
+    BaseUserMailer.verify(self).deliver #unless verified?
   end
 
   def set_api_token

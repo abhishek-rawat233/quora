@@ -25,33 +25,33 @@ class Question < ApplicationRecord
    before_save :add_url_slug
    after_create :set_question_notifications
    after_create :send_notifications
-   before_save :first
-   before_save :second
-   around_save :third
-   after_save :fourth
-   after_save :fifth
+  #  before_save :first
+  #  before_save :second
+  #  around_save :third
+  #  after_save :fourth
+  #  after_save :fifth
 
-  def first
-    p 'first'
-  end
+  # def first
+  #   p 'first'
+  # end
 
-  def second
-    p 'second'
-  end
+  # def second
+  #   p 'second'
+  # end
 
-  def third
-    p 'third before'
-    yield
-    p 'third after'
-  end
+  # def third
+  #   p 'third before'
+  #   yield
+  #   p 'third after'
+  # end
 
-  def fourth
-    p 'fourth'
-  end
-
-  def fifth
-    p 'fifth'
-  end
+  # def fourth
+  #   p 'fourth'
+  # end
+  # action mailer
+  # def fifth
+  #   p 'fifth'
+  # end
 
     # before_validation :_asd
     # after_validation :ab
@@ -189,7 +189,7 @@ class Question < ApplicationRecord
   end
 
   def set_question_notifications
-    related_user_ids.difference(base_user_id).each do |id|
+    related_user_ids.difference([base_user_id]).each do |id|
       notifications.create(base_user_id: id)
     end
   end

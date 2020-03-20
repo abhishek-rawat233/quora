@@ -1,6 +1,4 @@
 class QuestionsController < ApplicationController
-  wrap_parameters exclude: [:title]
-
   before_action :set_question_instance, only: :create
   before_action :set_question, only: [:show, :edit, :update, :destroy]
 
@@ -10,15 +8,14 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    # if @question.save
-    #   redirect_to user_question_path(@current_user, @question.url_slug), notice: t('.successfully_created')
-    # else
-    #   flash[:notice] = @question.errors.full_messages
-    # end
+    if @question.save
+      redirect_to user_question_path(@current_user, @question.url_slug), notice: t('.successfully_created')
+    else
+      flash[:notice] = @question.errors.full_messages
+    end
   end
 
   def set_question_instance
-    debugger
     @question = Question.new(question_params.merge(question_type: params[:commit], base_user_id: @current_user.id))
     @question.set_topics(tagged_topics)
   end

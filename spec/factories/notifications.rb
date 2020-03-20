@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :first_noti, class: "Notification" do
-    status { "unseen" }
+    status { 0 }
   end
 end

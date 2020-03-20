@@ -18,12 +18,12 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_user
-    @current_user ||= User.find_by(api_token: session[:api_token]) || get_api_stored_user
+    @current_user ||= BaseUser.find_by(api_token: session[:api_token]) || get_api_stored_user
     @profile_image ||= @current_user.get_profile_image if @current_user.present?
   end
 
   def get_api_stored_user
-    user ||= User.find_by(api_token: cookies.signed[:api_token])
+    user ||= BaseUser.find_by(api_token: cookies.signed[:api_token])
     user if user.present? && user.api_token == cookies.signed[:api_token]
   end
 
@@ -41,11 +41,11 @@ class ApplicationController < ActionController::Base
 
   def get_user_by_id
     user_id = params[:user_id] || params[:id]
-    @user = User.find_by(id: user_id)
+    @user = BaseUser.find_by(id: user_id)
   end
 
   def get_user_by_email
-    @user = User.find_by(email: params[:email])
+    @user = BaseUser.find_by(email: params[:email])
   end
 
   def redirect_invalid_user

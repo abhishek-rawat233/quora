@@ -3,29 +3,30 @@ FactoryBot.define do
     initialize_with do
       User.new(attributes)
     end
+    id { 100000 }
     name {"lol"}
-    email {"lel@lel.lel"}
-    password_digest {"lololol"}
+    sequence(:email) { |n| "asda#{n}@ioj.klk" }
+    password {"lololol"}
     password_confirmation {"lololol"}
     type {"User"}
     status { 0 }
 
-    # association :first_noti, factory: :notifications
   end
 
   factory :first_after_last_rspec, class: "BaseUser" do
     name { "why" }
     email { "should@name.be" }
-    password_digest { "present" }
-    password_confirmation { "present" }
     type { "User" }
     status { 0 }
+  end
+
+  factory :empty_user, class: BaseUser do
   end
 
   factory :last_after_last_rspec, class: "BaseUser" do
     name { "name" }
     email { "hoho@ho.ho" }
-    password_digest { "lastafterlastrspec" }
+    password { "lastafterlastrspec" }
     password_confirmation { "lastafterlastrspec" }
     status { 0 }
   end
@@ -36,7 +37,7 @@ FactoryBot.define do
     end
     name { "again" }
     email { "why@should.it" }
-    password_digest { "matter" }
+    password { "matter" }
     type { "User" }
     password_confirmation { "matter" }
     status { 1 }
