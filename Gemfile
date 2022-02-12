@@ -14,7 +14,7 @@ gem 'mysql2', '>= 0.4.4'
 # popper
 gem 'popper_js'
 # Use Puma as the app server
-gem 'puma', '~> 4.1'
+gem 'puma', '~> 4.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.1'
 # i18n gem
